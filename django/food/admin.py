@@ -9,9 +9,9 @@ class FoodserviceAdmin(admin.ModelAdmin):
 
 @admin.register(Dish)
 class DishAdmin(admin.ModelAdmin):
-    list_display = ('id', 'foodservice', 'price', 'on_menu')
+    list_display = ('id', 'name', 'description', 'foodservice', 'price')
     search_fields = ('foodservice__title',)
-    list_filter = ('on_menu', 'foodservice')
+    list_filter = ('foodservice', )
 
 @admin.register(FoodserviceWorker)
 class FoodserviceWorkerAdmin(admin.ModelAdmin):
@@ -25,7 +25,7 @@ class OrderAdmin(admin.ModelAdmin):
     search_fields = ('user__username',)
     list_filter = ('date',)
     
-@admin.register(OrderDetail)
+@admin.register(OrderDetails)
 class OrderDetailAdmin(admin.ModelAdmin):
     list_display = ('order', 'dish', 'count')
     search_fields = ('order__user__username', 'dish__foodservice__title')
@@ -42,6 +42,11 @@ class FavoriteFoodserviceAdmin(admin.ModelAdmin):
 
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
-    list_display = ('dish', 'date')
-    search_fields = ('dish__foodservice__title',)
+    list_display = ('id', 'date')
     list_filter = ('date',)
+    
+@admin.register(MenuDetails)
+class MenuDetailAdmin(admin.ModelAdmin):
+    list_display = ('menu', 'dish')
+    search_fields = ('dish__foodservice__title', 'menu__id')
+    list_filter = ('menu__date',)
