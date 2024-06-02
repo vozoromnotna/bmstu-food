@@ -1,0 +1,26 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+    
+    {% if form.errors %}
+        <p>Логин и пароль не совпадают. Попробуйте еще раз</p>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        <p>Вы уже вошли под логином {{user.get_username}}</p>
+    {% else %}  
+    <div class="container text-left">
+        <div class="row">
+            <div class="col">
+            </div>
+            <div class="col-10">
+                {% load template_extras %}
+                {% stylize_form form "Войти" %}
+            </div>
+            <div class="col">
+            </div>
+        </div>
+        
+    </div>
+    {% endif %}
+{% endblock  %}
