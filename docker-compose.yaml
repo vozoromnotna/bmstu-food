@@ -12,7 +12,7 @@ services:
       postgres:
         condition: service_healthy
     restart: always
-    command: sh -c "python manage.py makemigrations && 
+    command: sh -c "
             python manage.py migrate &&
             python -Xfrozen_modules=off manage.py runserver 0.0.0.0:8000"
     environment:
@@ -22,13 +22,6 @@ services:
       DB_HOST: postgres
       DB_PORT: '5432'
 
-  pgadmin:
-    build: ./pgadmin
-    ports:
-      - '7777:80'
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin
 
   postgres:
     image: postgres:16.3-alpine

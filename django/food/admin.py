@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Foodservice, Dish, FoodserviceWorker, Order, FavoriteDish, FavoriteFoodservice, DishSchedule
+from .models import *
 
 @admin.register(Foodservice)
 class FoodserviceAdmin(admin.ModelAdmin):
@@ -21,9 +21,14 @@ class FoodserviceWorkerAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'dish', 'count')
-    search_fields = ('user__username', 'dish__foodservice__title')
-    list_filter = ('user', 'dish')
+    list_display = ('id', 'user', 'date')
+    search_fields = ('user__username',)
+    list_filter = ('date',)
+    
+@admin.register(OrderDetail)
+class OrderDetailAdmin(admin.ModelAdmin):
+    list_display = ('order', 'dish', 'count')
+    search_fields = ('order__user__username', 'dish__foodservice__title')
 
 @admin.register(FavoriteDish)
 class FavoriteDishAdmin(admin.ModelAdmin):
@@ -35,8 +40,8 @@ class FavoriteFoodserviceAdmin(admin.ModelAdmin):
     list_display = ('user', 'foodservice')
     search_fields = ('user__username', 'foodservice__title')
 
-@admin.register(DishSchedule)
-class DishScheduleAdmin(admin.ModelAdmin):
-    list_display = ('dish', 'weekday')
+@admin.register(Menu)
+class MenuAdmin(admin.ModelAdmin):
+    list_display = ('dish', 'date')
     search_fields = ('dish__foodservice__title',)
-    list_filter = ('weekday',)
+    list_filter = ('date',)
