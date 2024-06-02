@@ -49,11 +49,15 @@ class FoodserviceWorker(models.Model):
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
-    count = models.IntegerField()
+    date = models.DateField()
 
     def __str__(self):
         return f'Order {self.id} by {self.user.username}'
+
+class OrderDetail(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
+    count = models.IntegerField()
 
 
 class FavoriteDish(models.Model):
@@ -78,12 +82,9 @@ class FavoriteFoodservice(models.Model):
         return f'{self.user.username} - {self.foodservice.title}'
 
 
-class DishSchedule(models.Model):
+class Menu(models.Model):
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
-    weekday = models.PositiveSmallIntegerField()
-
-    class Meta:
-        unique_together = ('dish', 'weekday')
+    date = models.PositiveSmallIntegerField()
 
     def __str__(self):
         return f'{self.dish.id} - {self.weekday}'
