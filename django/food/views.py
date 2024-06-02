@@ -16,7 +16,7 @@ class UserRegistrationFromView(FormView):
     
     def form_valid(self, form:UserRegistrationForm):
         user:User = form.instance
-        password = form.clean_password()
+        password = form.cleaned_data["password"]
         user.set_password(password)
         user.save()
         return super().form_valid(form)

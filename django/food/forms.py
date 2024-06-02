@@ -4,8 +4,8 @@ from django.utils.translation import gettext_lazy as _
 
 
 class UserRegistrationForm(forms.ModelForm):
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Repeat password', widget=forms.PasswordInput)
+    password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput)
     
     class Meta:
         model = User
@@ -17,7 +17,7 @@ class UserRegistrationForm(forms.ModelForm):
             'email':_('Email')
         }
 
-    def clean_password(self):
+    def clean_password2(self):
         cd = self.cleaned_data
         if cd['password'] != cd['password2']:
             raise forms.ValidationError('Passwords don\'t match.')
