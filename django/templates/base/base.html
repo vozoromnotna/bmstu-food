@@ -15,13 +15,13 @@
             <a class="btn btn-primary btn-lg fs-2" href="{% url "food:index" %}">BMST Food App</a>
         </div>
         {% if user.is_authenticated %}
-            <div class="p-2 d-flex ">
+            <div class="p-2 d-flex fs-5">
                 Пользователь: {{user.get_username}}
             </div>
             <div class="p-2">
                 <form id="logout-form" method="post" action="{% url 'food:logout' %}">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Выйти</button>
+                    <button type="submit" class="btn btn-danger btn-lg">Выйти</button>
                 </form>
             </div>
             
