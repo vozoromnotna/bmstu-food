@@ -8,24 +8,36 @@
 </head>
 <body>
     <header>
-        <h1>BMST Food App</h1>
+        
     </header>
-    <nav>
-        <a href="{% url "food:index" %}">Главная страница</a>
+    <div id="navbar" class="d-flex border border-primary bg-primary align-items-center text-white">
+        <div class="me-auto p-2 ">
+            <a class="btn btn-primary btn-lg fs-2" href="{% url "food:index" %}">BMST Food App</a>
+        </div>
         {% if user.is_authenticated %}
-            <p>Пользователь: {{ user.get_username }}</p>
-            <form id="logout-form" method="post" action="{% url 'food:logout' %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Выйти</button>
-            </form>
+            <div class="p-2 d-flex fs-5">
+                Пользователь: {{user.get_username}}
+            </div>
+            <div class="p-2">
+                <form id="logout-form" method="post" action="{% url 'food:logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-lg">Выйти</button>
+                </form>
+            </div>
+            
+            <div>
+            </div>
         {% else %}
-        <p>
-            <a href={% url "food:login" %} class="btn btn-primary">Войти</a>
-            <a href={% url "food:registration"  %} class="btn btn-primary">Зарегистрироваться</a>
-        </p>
+            <div class="p-2 ">
+                <a href={% url "food:login" %} class="btn btn-primary btn-lg">Войти</a>
+            </div>
+            <div class="p-2">
+                <a href={% url "food:registration"  %} class="btn btn-primary btn-lg">Зарегистрироваться</a>
+            </div>
             
         {% endif %}
-    </nav>
+    </div>
+
     <main>
         {% block content  %}
         {% endblock %}
