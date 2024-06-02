@@ -9,20 +9,18 @@
     {% if user.is_authenticated %}
         <p>Вы уже вошли под логином {{user.get_username}}</p>
     {% else %}  
-        <form method="post" action="{% url 'login' %}">
-            {% csrf_token %}
-            <table>
-                <tr>
-                    <td>{{ form.username.label_tag }}</td>
-                    <td>{{ form.username }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.password.label_tag }}</td>
-                    <td>{{ form.password }}</td>
-                </tr>
-            </table>
-            <input type="submit" value="login">
-            <input type="hidden" name="next" value="{{ next }}">
-        </form>
+    <div class="container text-left">
+        <div class="row">
+            <div class="col">
+            </div>
+            <div class="col-10">
+                {% load template_extras %}
+                {% stylize_form form "Войти" %}
+            </div>
+            <div class="col">
+            </div>
+        </div>
+        
+    </div>
     {% endif %}
 {% endblock  %}
