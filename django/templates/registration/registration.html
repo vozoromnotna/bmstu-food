@@ -1,0 +1,13 @@
+{% extends "base/base.html" %}
+
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <p>Вы уже вошли под пользователем {{user.get_username}}</p>
+    {% else %}
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Зарегистрироваться">
+        </form>
+    {% endif %}
+{% endblock %}
