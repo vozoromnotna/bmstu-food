@@ -21,7 +21,14 @@ services:
       DB_NAME: bmstu-food
       DB_HOST: postgres
       DB_PORT: '5432'
-
+  
+  pgadmin:
+    build: ./pgadmin
+    ports:
+      - '7777:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
 
   postgres:
     image: postgres:16.3-alpine
