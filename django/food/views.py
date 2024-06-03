@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, FormView, ListView, DeleteView
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth.views import LoginView
 from .models import Order, OrderDetails, FavoriteDish, Dish
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -52,3 +53,9 @@ class UserFavoriteDishView(LoginRequiredMixin, ListView):
 class UserFavoriteDishDeleteView(LoginRequiredMixin, DeleteView):
     model = FavoriteDish
     success_url = reverse_lazy("food:favorite_dish")
+    def form_valid(self, form):
+        user = self.object.user
+        if user != self.request.user:
+            raise PermissionDenied
+        return super().form_valid(form)
+        
