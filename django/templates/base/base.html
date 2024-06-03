@@ -14,6 +14,7 @@
     <header>
         
     </header>
+    {% load template_extras %}
     <div id="navbar" class="d-flex border border-primary bg-primary align-items-center text-white">
         <div class="me-auto p-2 ">
             <a class="btn btn-primary btn-lg fs-2" href="{% url "food:index" %}">BMST Food App</a>
@@ -25,6 +26,11 @@
             <div class="p-2 ">
                 <a href={% url "food:orders" %} class="btn btn-primary btn-lg">Личный кабинет</a>
             </div>
+            {% if user|has_group:"workers" %}
+            <div class="p-2">
+                <a href={% url "food:worker_account" %} class="btn btn-primary btn-lg">Управление заведением</a>
+            </div>
+            {% endif %}
             <div class="p-2">
                 <form id="logout-form" method="post" action="{% url 'food:logout' %}">
                     {% csrf_token %}
@@ -32,8 +38,6 @@
                 </form>
             </div>
             
-            <div>
-            </div>
         {% else %}
             <div class="p-2 ">
                 <a href={% url "food:login" %} class="btn btn-primary btn-lg">Войти</a>
