@@ -1,5 +1,5 @@
-{% extends "base/base.html" %}
-{% block content  %}
+{% extends "food/user_account.html" %}
+{% block usercontent  %}
     
         {% for order in orders %}
         <div class="container border m-2">
@@ -23,7 +23,7 @@
             {% endfor %}
             <div class="d-flex justify-content-end m-2">
                 {% load template_extras %}
-                Всего:{% multiply detail.dish.price detail.count %}
+                Всего:{{order.total_cost}}
             </div>
         </div>
       {% endfor %}
