@@ -12,4 +12,7 @@ urlpatterns = [
     path('registr_done', UserRegistrationDoneView.as_view(), name='registration_done'),
     path('logout', LogoutView.as_view(), name='logout'),
     path('orders', UserOrdersView.as_view(), name="orders"),
+    path('favorite_dish', UserFavoriteDishView.as_view(), name="favorite_dish"),
+    path('favorite_dish/delete/<int:pk>/', UserFavoriteDishDeleteView.as_view(), name="favorite_dish_delete"),
+    path('worker_account', WorkerFoodservicesView.as_view(), name='worker_account')
 ]

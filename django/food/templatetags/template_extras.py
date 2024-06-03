@@ -9,3 +9,11 @@ def stylize_form(form, button_label):
 @register.simple_tag
 def multiply(a, b):
     return a * b
+
+@register.filter(name='has_group') 
+def has_group(user, group_name):
+    return user.groups.filter(name=group_name).exists() 
+
+@register.filter(name='is_owner') 
+def has_group(user, foodservice):
+    return foodservice.owner == user

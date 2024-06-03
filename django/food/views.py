@@ -2,9 +2,10 @@ from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
-from django.views.generic import TemplateView, FormView, ListView
+from django.views.generic import TemplateView, FormView, ListView, DeleteView
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth.views import LoginView
-from .models import Order, OrderDetails, FavoriteDish, Dish
+from .models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum, F, DecimalField
 
@@ -48,3 +49,24 @@ class UserFavoriteDishView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return FavoriteDish.objects.filter(user=self.request.user)
+    
+class UserFavoriteDishDeleteView(LoginRequiredMixin, DeleteView):
+    model = FavoriteDish
+    success_url = reverse_lazy("food:favorite_dish")
+    def form_valid(self, form):
+        user = self.object.user
+        if user != self.request.user:
+            raise PermissionDenied
+        return super().form_valid(form)
+    
+
+class WorkerFoodservicesView(LoginRequiredMixin, ListView):
+    model = Foodservice
+    template_name = "food/worker_account.html"
+    context_object_name = "foodservices"
+    
+    def get_queryset(self):
+        user = self.request.user
+        if not user.groups.filter(name="workers").exists():
+            raise PermissionDenied
+        return Foodservice.objects.filter(foodserviceworker__worker=user)
