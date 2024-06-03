@@ -1,0 +1,31 @@
+{% extends "base/base.html" %}
+{% block content  %}
+    
+        {% for order in orders %}
+        <div class="container border m-2">
+            <div class="d-flex justify-content-start">
+                <div class="m-2">
+                    Номер заказа:{{ order.id }}
+                </div>
+                <div class ="m-2">
+                    {{ order.date }}
+                </div>
+            </div>
+            {% for detail in order.orderdetails_set.all %}
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="m-2">
+                    {{ detail.dish.name }}
+                </div>
+                <div class="m-2">
+                    {{ detail.dish.price }} x {{detail.count}}
+                </div>
+            </div>
+            {% endfor %}
+            <div class="d-flex justify-content-end m-2">
+                {% load template_extras %}
+                Всего:{% multiply detail.dish.price detail.count %}
+            </div>
+        </div>
+      {% endfor %}
+    
+{% endblock  %}
