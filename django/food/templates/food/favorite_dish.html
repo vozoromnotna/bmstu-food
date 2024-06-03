@@ -1,4 +1,27 @@
 {% extends "food/user_account.html" %}
-{% block usercontent  %}
 
+{% block links %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "food/favorite_dish.css"%}"/>
+{% endblock %}
+
+{% block usercontent  %}
+{% for favorite in favorite_dishes %}
+
+        <div class="container border m-2">
+            <div class="d-flex justify-content-start">
+                <div class="align-self-center m-2">
+                    Блюдо: {{ favorite.dish.name }}
+                </div>
+                {% if favorite.dish.image %}
+                <div class="img-preview m-2">
+                    <img src={{ favorite.dish.image.url }} class="img-fluid"/>
+                </div>
+                {% endif %}
+                <div class="ms-auto m-2">
+                    <button class="btn btn-danger h-100">Удалить</button>
+                </div>
+            </div>
+        </div>
+      {% endfor %}
 {% endblock %}

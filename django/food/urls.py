@@ -12,4 +12,5 @@ urlpatterns = [
     path('registr_done', UserRegistrationDoneView.as_view(), name='registration_done'),
     path('logout', LogoutView.as_view(), name='logout'),
     path('orders', UserOrdersView.as_view(), name="orders"),
+    path('favorite_dish', UserFavoriteDishView.as_view(), name="favorite_dish"),
 ]
