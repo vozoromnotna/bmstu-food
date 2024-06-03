@@ -1,8 +1,12 @@
+from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, ListView
 from django.contrib.auth.views import LoginView
+from .models import Order, OrderDetails, FavoriteDish, Dish
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Sum, F, DecimalField
 
 from .forms import *
 class IndexView(TemplateView):
@@ -26,3 +30,21 @@ class UserRegistrationFromView(FormView):
 class UserLoginFormView(LoginView):
     authentication_form = CustomUserAuthenticationForm
     
+
+class UserOrdersView(LoginRequiredMixin, ListView):
+    template_name = "food/orders.html"
+    model = Order
+    context_object_name = "orders"
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user).prefetch_related('orderdetails_set').annotate(
+            total_cost=Sum(F('orderdetails__count') * F('orderdetails__dish__price'), output_field=DecimalField())
+        )
+    
+class UserFavoriteDishView(LoginRequiredMixin, ListView):
+    template_name = "food/favorite_dish.html"
+    model = FavoriteDish
+    context_object_name = "favorite_dishes"
+
+    def get_queryset(self):
+        return FavoriteDish.objects.filter(user=self.request.user)
