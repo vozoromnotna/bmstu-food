@@ -19,7 +19,9 @@
                 </div>
                 {% endif %}
                 <div class="ms-auto m-2">
-                    <button class="btn btn-danger h-100">Удалить</button>
+                    <form method="POST" action="{% url "food:favorite_dish_delete" favorite.id %}">
+                        {% csrf_token %}<input type="submit" class="btn btn-danger" value="Удалить">
+                     </form>
                 </div>
             </div>
         </div>

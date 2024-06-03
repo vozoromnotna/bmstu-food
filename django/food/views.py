@@ -2,7 +2,7 @@ from django.db.models.query import QuerySet
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
-from django.views.generic import TemplateView, FormView, ListView
+from django.views.generic import TemplateView, FormView, ListView, DeleteView
 from django.contrib.auth.views import LoginView
 from .models import Order, OrderDetails, FavoriteDish, Dish
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -48,3 +48,7 @@ class UserFavoriteDishView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return FavoriteDish.objects.filter(user=self.request.user)
+    
+class UserFavoriteDishDeleteView(LoginRequiredMixin, DeleteView):
+    model = FavoriteDish
+    success_url = reverse_lazy("food:favorite_dish")
