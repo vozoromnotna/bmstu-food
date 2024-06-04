@@ -5,10 +5,12 @@
         <li class="list-group-item d-flex align-items-center">
             <div class="p-2">{{ worker.username }}</div>
             <div class="p-2">{{ worker.first_name }} {{ worker.last_name }}</div>
-            <div class="p-2">
-                <a class="btn btn-danger"  href={% url "food:foodservice_worker_delete" title_2 worker.id %}>Удалить</a>
+            <div class="p-2 ms-auto">
+                <a class="btn btn-danger"  href={% url "food:foodservice_worker_delete" title_2 worker.id %}>Уволить</a>
             </div>
         </li>
     {% endfor %}
+    <li class="list-group-item"><a class="btn btn-primary" href={% url "food:foodservice_worker_add" title_2 %}>Добавить работника</a></li>
 </ul>
+
 {% endblock  %}

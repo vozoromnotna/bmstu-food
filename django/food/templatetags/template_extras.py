@@ -1,4 +1,5 @@
 from django import template
+from food.models import Foodservice
 
 register = template.Library()
 
@@ -15,5 +16,7 @@ def has_group(user, group_name):
     return user.groups.filter(name=group_name).exists() 
 
 @register.filter(name='is_owner') 
-def has_group(user, foodservice):
+def is_owner(user, foodservice):
+    if type(foodservice) == str:
+        foodservice = Foodservice.objects.get(title=foodservice)
     return foodservice.owner == user

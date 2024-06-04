@@ -2,9 +2,10 @@ from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
-from django.views.generic import TemplateView, FormView, ListView, DeleteView
+from django.views.generic import TemplateView, FormView, ListView, DeleteView, CreateView
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.models import Group
 from .models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum, F, DecimalField
@@ -97,7 +98,14 @@ class FoodserviceWorkerDeleteView(LoginRequiredMixin, DeleteView):
         if self.request.user != self.object.foodservice.owner:
             raise PermissionDenied
 
+        worker = self.object.worker
+        
         self.object.delete()
+        
+        if (len(Foodservice.objects.filter(foodserviceworker__worker=worker)) == 0):
+            group = Group.objects.get(name="workers")
+            worker.groups.remove(group)
+            
         
         success_url = self.get_success_url()
         return HttpResponseRedirect(success_url)
@@ -111,4 +119,26 @@ class FoodserviceWorkerDeleteView(LoginRequiredMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy("food:foodservice_workers", kwargs = {"title": self.kwargs["title"]})
 
+class FoodserviceWorkerAddView(LoginRequiredMixin, CreateView):
+    model = FoodserviceWorker
+    form_class = FoodserviceWorkerForm
+    template_name = "food/foodservice_worker_add.html" 
+
+    def form_valid(self, form):
+        foodservice = Foodservice.objects.get(title=self.kwargs['title'])
+        form.instance.foodservice = foodservice
+        
+        worker_username=form.data["username"]
+        if FoodserviceWorker.objects.filter(worker__username=worker_username, foodservice=foodservice).exists():
+            form.add_error("username", forms.ValidationError("Работник уже в штате"))
+            return super().form_invalid(form)
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse_lazy("food:foodservice_workers", kwargs = {"title": self.kwargs["title"]})
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title_2'] = self.kwargs['title'] #Иначе шаблон не видит title
+        return context
     
