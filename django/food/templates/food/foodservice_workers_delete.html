@@ -1,0 +1,8 @@
+{% extends "base/base.html" %}
+{% block content %}
+    <form class="d-flex align-items-center flex-column p-2" method="post">{% csrf_token %}
+        <label class="form-label">Вы действительно хотите уволить сотрудника {{ object.worker.username }}?</label>
+        {{ form }}
+        <input class="btn btn-danger" type="submit" value="Да">
+    </form>
+{% endblock %}

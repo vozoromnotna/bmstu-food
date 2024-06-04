@@ -1,12 +1,8 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
 from django.contrib.auth.views import LoginView
-
-from .forms import *
-class IndexView(TemplateView):
-    template_name = "food/index.html"
+from django.contrib.auth.models import User
+from ..forms import UserRegistrationForm, CustomUserAuthenticationForm
 
 class UserRegistrationDoneView(TemplateView):
     template_name = "registration/registration_done.html"
@@ -25,4 +21,3 @@ class UserRegistrationFromView(FormView):
     
 class UserLoginFormView(LoginView):
     authentication_form = CustomUserAuthenticationForm
-    
