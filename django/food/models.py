@@ -26,6 +26,7 @@ class Dish(models.Model):
     carbohydrates = models.FloatField()
     fat = models.FloatField()
     proteins = models.FloatField()
+    # Я начал работать
 
     def __str__(self):
         return f'{self.foodservice.title} - {self.id}'
