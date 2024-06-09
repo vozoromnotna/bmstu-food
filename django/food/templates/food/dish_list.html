@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <h1>Список всех блюд</h1>
+    <ul>
+        {% for dish in dish_list %}
+            <li>
+                <a href="{% url 'food:dish_detail' dish.id %}">{{ dish.name }}
+                <br>
+                <a href="{% url 'food:update_dish' dish.id %}">Изменить блюдо</a>
+                <br>
+                <a href="{% url 'food:delete_dish' dish.id %}"onclick="return confirm('Вы уверены, что хотите удалить это блюдо?');">Удалить блюдо</a>
+                <br>
+                </a>
+                <img style="width:150px" src="{{ dish.image }}">
+                <br>
+                Описание: {{ dish.description }}
+                <br><br>
+            </li>
+        {% endfor %}
+    </ul>
+    <br><br>
+    <a href="{% url 'food:dish_form' %}">Добавить блюдо</a>
+    <br>
+<!--    <a href="{% url 'food:foodservice_form' %}">Добавить заведение</a>-->
+{% endblock %}

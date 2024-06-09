@@ -4,7 +4,9 @@ from django.utils.translation import gettext_lazy as _
 
 from django.contrib.auth.forms import AuthenticationForm, UsernameField 
 
-from .models import FoodserviceWorker
+from .models import *
+
+from django.forms import ModelForm
 
 class CustomUserAuthenticationForm(AuthenticationForm):
     username = UsernameField(
@@ -65,3 +67,22 @@ class FoodserviceWorkerForm(forms.ModelForm):
         
         
         return cd["username"]
+
+
+class DishForm(forms.ModelForm):
+    class Meta:
+        model = Dish
+        fields = ['name', 'description', 'image', 'foodservice', 'price', 'energy', 'carbohydrates', 'fat', 'proteins']
+
+
+class FoodserviceForm(forms.ModelForm):
+    class Meta:
+        model = Foodservice
+        fields = ['title', 'type', 'owner']
+
+
+class MenuForm(forms.ModelForm):
+    class Meta:
+        model = MenuDetails
+        fields = ['dish', 'menu']
+

@@ -1,0 +1,16 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <h1><strong>Название:</strong> {{ dish.name }}</h1>
+        <p><strong>Описание:</strong> {{ dish.description }}</p>
+        <img style="width:150px" src="{{ dish.image }}">
+        <p><strong>Заведение:</strong> {{ dish.foodservice }}</p>
+        <p><strong>Цена:</strong> {{ dish.price }}</p>
+        <p><strong>Энергетическая ценность:</strong> {{ dish.energy }}</p>
+        <p><strong>Углеводы:</strong> {{ dish.carbohydrates }}</p>
+        <p><strong>Жиры:</strong> {{ dish.fat }}</p>
+        <p><strong>Белки:</strong> {{ dish.proteins }}</p>
+
+        <p><a href="{% url 'food:update_dish' dish.id %}">Изменить блюдо</a></p>
+        <p><a href="{% url 'food:delete_dish' dish.id %}"onclick="return confirm('Вы уверены, что хотите удалить это блюдо?');">Удалить блюдо</a></p>
+{% endblock %}
