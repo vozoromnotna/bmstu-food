@@ -8,3 +8,14 @@
     max-height: 100%;
     object-fit: cover; /* Изображение будет обрезано, чтобы заполнить контейнер */
 }
+
+.card{
+    width: 18rem;
+}
+
+.card img{
+    width: 100%;
+    height: 100%;
+    max-width: 20rem;
+    max-height: 20rem;
+}
