@@ -73,16 +73,39 @@ class DishForm(forms.ModelForm):
     class Meta:
         model = Dish
         fields = ['name', 'description', 'image', 'foodservice', 'price', 'energy', 'carbohydrates', 'fat', 'proteins']
-
+        labels = {
+            'name': _('Наименование'),
+            'description': _('Описание'),
+            'image': _('Фотография'),
+            'foodservice': _('Заведение'),
+            'price': _('Цена, руб.'),
+            'energy': _('Энергетическая ценность, ккал.'),
+            'carbohydrates': _('Углеводы, г.'),
+            'fat': _('Жиры, г.'),
+            'proteins': _('Белки, г.')
+        }
 
 class FoodserviceForm(forms.ModelForm):
     class Meta:
         model = Foodservice
         fields = ['title', 'type', 'owner']
+        labels = {
+            'title': _('Название'),
+            'type': _('Тип заведения'),
+            'owner': _('Владелец')
+        }
 
 
 class MenuForm(forms.ModelForm):
+    # dish = forms.CharField(max_length=150, label="Блюдо")
+    # menu = forms.CharField(max_length=150, label="Меню")
+
+
     class Meta:
         model = MenuDetails
         fields = ['dish', 'menu']
+        labels = {
+            'dish': _('Блюдо'),
+            'menu': _('Меню')
+        }
 

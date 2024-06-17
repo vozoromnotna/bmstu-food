@@ -93,5 +93,9 @@ class MenuDetails(models.Model):
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ('dish', 'menu')
+
+
     def __str__(self):
-        return f'{self.id} {self.dish}'
+        return f'{self.dish} - {self.dish.price} руб.'

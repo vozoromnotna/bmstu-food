@@ -2,8 +2,6 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.views import LogoutView
 from .views import *
-from .views.views_dish import *
-from .views.views_menu import *
 
 app_name = 'food'
 
