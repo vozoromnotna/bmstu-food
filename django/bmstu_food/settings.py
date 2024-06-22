@@ -144,3 +144,5 @@ MEDIA_URL = 'media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
+
+CSRF_TRUSTED_ORIGINS = ["https://bmstufood.ru", "https://www.bmstufood.ru", "https://bmstufood.online", "https://www.bmstufood.online"]
