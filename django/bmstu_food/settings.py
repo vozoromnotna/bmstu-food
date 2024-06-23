@@ -146,3 +146,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 
 CSRF_TRUSTED_ORIGINS = ["https://bmstufood.ru", "https://www.bmstufood.ru", "https://bmstufood.online", "https://www.bmstufood.online"]
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT  = 587
+
+EMAIL_HOST_USER  = os.environ["EMAIL_HOST_USER"]
+EMAIL_HOST_PASSWORD  = os.environ["EMAIL_HOST_PASSWORD"]
