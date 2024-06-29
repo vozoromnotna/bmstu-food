@@ -19,14 +19,13 @@ class Foodservice(models.Model):
 class Dish(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(default=None, blank=True)
-    image = models.TextField(default=None, blank=True)
+    image = models.FileField(default=None, blank=True, upload_to='upldfile/')
     foodservice = models.ForeignKey(Foodservice, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     energy = models.FloatField()
     carbohydrates = models.FloatField()
     fat = models.FloatField()
     proteins = models.FloatField()
-    # Я начал работать
 
     def __str__(self):
         return f'{self.name}'

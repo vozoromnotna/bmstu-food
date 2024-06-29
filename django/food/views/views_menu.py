@@ -22,11 +22,11 @@ class MenuCreateView(CreateView):
     template_name = 'food/menu_form.html'
     success_url = reverse_lazy('food:menu')
 
-    def form_valid(self, form):
+    def form_invalid(self, form):
          # logger.critical('ааааааааа')
-        dish = Dish.objects.get(name=self.kwargs['dish'])
+        dish = form.cleaned_data['dish']
         # logger.critical(dish)
-    #     menu = Menu.objects.get(date=self.kwargs['menu'])
+        menu = form.cleaned_data['menu']
     #     logger.critical(menu)
     #     dish = Dish(id=7)
     #
@@ -39,9 +39,8 @@ class MenuCreateView(CreateView):
         # print('ааааа')
         # dish_name = form.data["dish"]
         if MenuDetails.objects.filter(dish=dish).exists():
-            form.add_error("dish", forms.ValidationError("абоба"))
+            form.add_error("dish", forms.ValidationError(f"{dish} уже есть в меню на {menu}"))
             return super().form_invalid(form)
-        return super().form_valid(form)
 
 
 class MenuDeleteView(DeleteView):
