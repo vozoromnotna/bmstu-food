@@ -166,6 +166,7 @@ cython_debug/
 
 media/
 
+.idea/
 .env.prod
 
 *.crt
