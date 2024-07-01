@@ -1,5 +1,5 @@
 {% autoescape off %}
-Hi {{ user.username }},
-Please click on the link to confirm your registration,
-http://{{ domain }}{% url 'food:activate' uidb64=uid token=token %}
+Здравствуйте, {{ user.username }},
+Нажмите на ссылку, чтобы потвердить свой аккаунт
+https://{{ domain }}{% url 'food:activate' uidb64=uid token=token %}
 {% endautoescape %}
