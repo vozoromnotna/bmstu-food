@@ -18,7 +18,6 @@ urlpatterns = [
     path('foodsevice/<str:title>/workers/', FoodserviceWorkersView.as_view(), name='foodservice_workers'),
     path('foodsevice/<str:title>/workers/delete/<int:user_id>/', FoodserviceWorkerDeleteView.as_view(), name='foodservice_worker_delete'),
     path('foodservice/<str:title>/workers/add/', FoodserviceWorkerAddView.as_view(), name='foodservice_worker_add'),
-
     path('dish/', DishListView.as_view(), name='dish'),
     path('dish/create/', DishCreateView.as_view(), name='dish_form'),
     path('foodservice/create/', FoodserviceCreateView.as_view(), name='foodservice_form'),
@@ -29,4 +28,9 @@ urlpatterns = [
     path('menu/', MenuListView.as_view(), name='menu'),
     path('menu/create/', MenuCreateView.as_view(), name='menu_form'),
     path('menu/<int:menu_id>/delete/', MenuDeleteView.as_view(), name='delete_menu'),
+
+    path('orders/<str:title>/create/', CreateOrderView.as_view(), name='order_create'),
+    path('orders/create/success/', CreateOrderSuccessView.as_view(), name='order_create_success'),
+    path('registration/activate/<str:uidb64>/<str:token>/', UserActivateView.as_view(), name='activate'),
 ]
+

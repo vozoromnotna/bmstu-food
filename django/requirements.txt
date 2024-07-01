@@ -1,3 +1,4 @@
 Django==5.0.6
 debugpy==1.8.1
 psycopg[binary]==3.1.19
+gunicorn==22.0.0

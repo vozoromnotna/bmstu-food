@@ -1,0 +1,54 @@
+{% extends "base/base.html" %}
+{% block content  %}
+{% load static %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col d-flex">
+            <div class="mb-3">
+                <label for="usernameInput" class="form-label">Логин клиента</label>
+                <input type="text" class="form-control" id="usernameInput">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div id="dish-container" class="d-flex flex-column"></div>
+        </div>
+        <div class="col">
+            <div id="order-container" class="d-flex flex-column"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col d-flex flex-row-reverse">
+            <h3 id="total-price"></h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col d-flex flex-row-reverse">
+            <button id="create-order" class="btn btn-success">Сделать заказ</button>
+        </div>
+    </div>
+    
+
+</div>
+
+    
+
+{% endblock  %}
+
+{% block scripts %}
+<script>
+    document.csrftoken = "{{ csrf_token }}";
+    document.dishes = [
+    {% for dish in dishes %}
+    {
+        name: "{{ dish.name }}",
+        price: {{dish.price}},
+    },
+    {% endfor %}
+    ];
+</script>
+<script type="module" src="{% static "food/DishFactory.js"%}"></script>
+<script type="module" src="{% static "food/order_create.js" %}"></script>
+{% endblock %}

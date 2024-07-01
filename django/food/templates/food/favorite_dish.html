@@ -6,24 +6,28 @@
 {% endblock %}
 
 {% block usercontent  %}
-{% for favorite in favorite_dishes %}
-
-        <div class="container border m-2">
-            <div class="d-flex justify-content-start">
-                <div class="align-self-center m-2">
-                    Блюдо: {{ favorite.dish.name }}
+    <div class="card-holder d-flex flex-wrap m-2">
+        {% for favorite in favorite_dishes %}
+        <div class="card m-2">
+            {% if favorite.dish.image %}
+                <img src={{ favorite.dish.image.url  }} class="card-img-top">
+            {% else %}
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png?20200912122019" class="card-img-top">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ favorite.dish.name }}</h5>
+                <div class="card-text">
+                    <p>Цена: {{ favorite.dish.price }} р.</p>
+                    <p>Калорийность: {{ favorite.dish.energy}} Ккал</p>
+                    <p>Белки: {{ favorite.dish.proteins }} г.</p>
+                    <p>Жиры: {{ favorite.dish.fat }} г.</p>
+                    <p>Углеводы: {{ favorite.dish.carbohydrates }} г.</p>
                 </div>
-                {% if favorite.dish.image %}
-                <div class="img-preview m-2">
-                    <img src={{ favorite.dish.image.url }} class="img-fluid"/>
-                </div>
-                {% endif %}
-                <div class="ms-auto m-2">
-                    <form method="POST" action="{% url "food:favorite_dish_delete" favorite.id %}">
-                        {% csrf_token %}<input type="submit" class="btn btn-danger" value="Удалить">
-                     </form>
-                </div>
+                <form method="POST" action="{% url "food:favorite_dish_delete" favorite.id %}">
+                    {% csrf_token %}<input type="submit" class="btn btn-danger" value="Удалить">
+                </form>
             </div>
         </div>
-      {% endfor %}
+    {% endfor %}
+    </div>
 {% endblock %}

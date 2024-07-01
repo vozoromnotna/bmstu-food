@@ -8,6 +8,7 @@ from .models import *
 
 from django.forms import ModelForm
 
+
 class CustomUserAuthenticationForm(AuthenticationForm):
     username = UsernameField(
         label=_("Логин"),
@@ -18,20 +19,28 @@ class CustomUserAuthenticationForm(AuthenticationForm):
         strip=False,
         widget=forms.PasswordInput(attrs={"autocomplete": "current-password"}),
     )
+    
+    error_messages = {
+        "invalid_login": _(
+            "Логин и пароль не совпадают"
+        ),
+        "inactive": _("Пользователь не подтвердил email"),
+    }
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput)
+    email = forms.EmailField(label='Email', required=True)
     
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('username', 'first_name', 'last_name')
         labels = {
             'username':_('Логин'),
             'first_name':_('Имя'),
             'last_name':_('Фамилия'),
-            'email':_('Email')
         }
+        
 
     def clean_password2(self):
         cd = self.cleaned_data
@@ -67,7 +76,6 @@ class FoodserviceWorkerForm(forms.ModelForm):
         
         
         return cd["username"]
-
 
 class DishForm(forms.ModelForm):
     class Meta:
@@ -109,3 +117,9 @@ class MenuForm(forms.ModelForm):
             'menu': _('Меню')
         }
 
+class CreateOrderForm(forms.ModelForm):
+    username = forms.CharField(max_length=150, label="Логин пользователя")
+    
+    class Meta:
+        model = OrderDetails
+        fields = ['dish', 'count']
