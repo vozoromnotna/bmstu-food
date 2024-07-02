@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <h1>Все заказы заведения {{orders.0.dish.foodservice.title}}</h1>
+    <table>
+  <tr>
+    <th>Дата</th>
+    <th>Пользователь</th>
+    <th>ID заказа</th>
+  </tr>
+  {% for order in orders %}
+  <tr>
+    <td>{{ order.order.date|date:"d-m-Y" }}</td>
+    <td>{{ order.order.user.username }}</td>
+    <td>{{ order.order.id }}</td>
+    <td><a href="{% url 'food:order_detail' order.id %}">Детали</a></td>
+  </tr>
+  {% endfor %}
+    </table>
+{% endblock %}
