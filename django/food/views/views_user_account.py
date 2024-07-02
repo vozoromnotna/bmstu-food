@@ -23,6 +23,7 @@ class UserOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = OrderDetails
     context_object_name = "orders"
     
+    
     def test_func(self):
         return self.request.user.is_authenticated and self.request.user.is_staff
     def get_queryset(self):
