@@ -1,0 +1,18 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<h2>Добавить заведение</h2>
+    <div class="container text-left">
+        <div class="row">
+            <div class="col">
+            </div>
+            <div class="col-10">
+                {% load template_extras %}
+                {% stylize_form form "Добавить" %}
+            </div>
+            <div class="col">
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

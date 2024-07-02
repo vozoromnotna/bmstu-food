@@ -19,17 +19,16 @@ class Foodservice(models.Model):
 class Dish(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(default=None, blank=True)
-    image = models.FileField(blank=True, default=None)
+    image = models.FileField(default=None, blank=True, upload_to='upldfile/')
     foodservice = models.ForeignKey(Foodservice, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     energy = models.FloatField()
     carbohydrates = models.FloatField()
     fat = models.FloatField()
     proteins = models.FloatField()
-    # Я начал работать
 
     def __str__(self):
-        return f'{self.foodservice.title} - {self.id}'
+        return f'{self.name}'
 
 
 class FoodserviceRoles(models.TextChoices):
@@ -85,10 +84,17 @@ class FavoriteFoodservice(models.Model):
 
 
 class Menu(models.Model):
-    date = models.DateTimeField(auto_now_add=True, blank=True)
+    date = models.DateField(auto_now_add=True, blank=True)
     def __str__(self):
         return f'{self.date}'
     
 class MenuDetails(models.Model):
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('dish', 'menu')
+
+
+    def __str__(self):
+        return f'{self.dish} - {self.dish.price} руб.'

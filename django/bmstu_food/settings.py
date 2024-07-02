@@ -24,7 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-=pieibd$zo+6w4vfbcd)*r0vxl7)*$pa(!g7bv!n%ft8i5_m#s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+DEBUG = int(os.environ["DEBUG"])
 
 ALLOWED_HOSTS = ['*']
 
@@ -126,9 +127,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'files', 'static')
 STATIC_URL = 'static/'
 
-MEDIA_ROOT = 'media/'
+if not DEBUG:
+    STATIC_ROOT = BASE_DIR / "staticfiles" 
+    MEDIA_ROOT = BASE_DIR / "mediafiles"
+else:
+    MEDIA_ROOT = "media/"
+
+
 MEDIA_URL = 'media/'
 
 # Default primary key field type
@@ -137,3 +145,13 @@ MEDIA_URL = 'media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/'
+
+CSRF_TRUSTED_ORIGINS = ["https://bmstufood.ru", "https://www.bmstufood.ru", "https://bmstufood.online", "https://www.bmstufood.online"]
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT  = 587
+
+EMAIL_HOST_USER  = os.environ["EMAIL_HOST_USER"]
+EMAIL_HOST_PASSWORD  = os.environ["EMAIL_HOST_PASSWORD"]

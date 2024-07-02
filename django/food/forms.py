@@ -4,7 +4,10 @@ from django.utils.translation import gettext_lazy as _
 
 from django.contrib.auth.forms import AuthenticationForm, UsernameField 
 
-from .models import FoodserviceWorker
+from .models import *
+
+from django.forms import ModelForm
+
 
 class CustomUserAuthenticationForm(AuthenticationForm):
     username = UsernameField(
@@ -16,20 +19,28 @@ class CustomUserAuthenticationForm(AuthenticationForm):
         strip=False,
         widget=forms.PasswordInput(attrs={"autocomplete": "current-password"}),
     )
+    
+    error_messages = {
+        "invalid_login": _(
+            "Логин и пароль не совпадают"
+        ),
+        "inactive": _("Пользователь не подтвердил email"),
+    }
 
 class UserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Пароль', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Повторите пароль', widget=forms.PasswordInput)
+    email = forms.EmailField(label='Email', required=True)
     
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('username', 'first_name', 'last_name')
         labels = {
             'username':_('Логин'),
             'first_name':_('Имя'),
             'last_name':_('Фамилия'),
-            'email':_('Email')
         }
+        
 
     def clean_password2(self):
         cd = self.cleaned_data
@@ -65,3 +76,50 @@ class FoodserviceWorkerForm(forms.ModelForm):
         
         
         return cd["username"]
+
+class DishForm(forms.ModelForm):
+    class Meta:
+        model = Dish
+        fields = ['name', 'description', 'image', 'foodservice', 'price', 'energy', 'carbohydrates', 'fat', 'proteins']
+        labels = {
+            'name': _('Наименование'),
+            'description': _('Описание'),
+            'image': _('Фотография'),
+            'foodservice': _('Заведение'),
+            'price': _('Цена, руб.'),
+            'energy': _('Энергетическая ценность, ккал.'),
+            'carbohydrates': _('Углеводы, г.'),
+            'fat': _('Жиры, г.'),
+            'proteins': _('Белки, г.')
+        }
+
+class FoodserviceForm(forms.ModelForm):
+    class Meta:
+        model = Foodservice
+        fields = ['title', 'type', 'owner']
+        labels = {
+            'title': _('Название'),
+            'type': _('Тип заведения'),
+            'owner': _('Владелец')
+        }
+
+
+class MenuForm(forms.ModelForm):
+    # dish = forms.CharField(max_length=150, label="Блюдо")
+    # menu = forms.CharField(max_length=150, label="Меню")
+
+
+    class Meta:
+        model = MenuDetails
+        fields = ['dish', 'menu']
+        labels = {
+            'dish': _('Блюдо'),
+            'menu': _('Меню')
+        }
+
+class CreateOrderForm(forms.ModelForm):
+    username = forms.CharField(max_length=150, label="Логин пользователя")
+    
+    class Meta:
+        model = OrderDetails
+        fields = ['dish', 'count']
