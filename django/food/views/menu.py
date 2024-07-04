@@ -11,7 +11,7 @@ import logging
 class MenuListView(ListView):
     model = MenuDetails
     context_object_name = "menu_list"
-    template_name = "food/menu_list.html"
+    template_name = "food/menu/menu_list.html"
 
 
 # logger = logging.getLogger('__name__')
@@ -19,7 +19,7 @@ class MenuListView(ListView):
 class MenuCreateView(CreateView):
     model = MenuDetails
     form_class = MenuForm
-    template_name = 'food/menu_form.html'
+    template_name = 'food/menu/menu_form.html'
     success_url = reverse_lazy('food:menu')
 
     def form_invalid(self, form):
@@ -48,7 +48,7 @@ class MenuDeleteView(DeleteView):
     pk_url_kwarg = 'menu_id'
     context_object_name = "menu_list"
     success_url = reverse_lazy('food:menu')
-    template_name = 'food/menu_confirm_delete.html'
+    template_name = 'food/menu/menu_confirm_delete.html'
 
 
 

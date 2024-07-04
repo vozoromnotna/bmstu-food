@@ -10,8 +10,9 @@
                 </button>
                 <div class="collapse" id="collapse{{ foodservice.id }}">
                     <div class="list-group">
-                        <a class="list-group-item list-group-item-action" href="">Заказы</a>
-                        <a class="list-group-item list-group-item-action" href="">Меню</a>
+                        <a class="list-group-item list-group-item-action" href={% url "food:foodservice_orders" foodservice.title %}>Заказы</a>
+                        <a class="list-group-item list-group-item-action" href={% url "food:menu" %}>Меню</a>
+                        <a class="list-group-item list-group-item-action" href={% url "food:dish" %}>Блюда</a>
                         {% load template_extras %}
                         {% if user|is_owner:foodservice%}
                             <a class="list-group-item list-group-item-action" href={% url "food:foodservice_workers" foodservice.title %}>Работники</a>

@@ -19,7 +19,7 @@ class Foodservice(models.Model):
 class Dish(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(default=None, blank=True)
-    image = models.FileField(default=None, blank=True, upload_to='upldfile/')
+    image = models.FileField(default=None, blank=True)
     foodservice = models.ForeignKey(Foodservice, on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     energy = models.FloatField()

@@ -5,13 +5,18 @@ from django.views.generic import ListView, DeleteView, CreateView
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import Group
 from ..models import *
-from django.contrib.auth.mixins import LoginRequiredMixin
-from ..forms import forms, FoodserviceWorkerForm
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from ..forms import forms, FoodserviceWorkerForm, FoodserviceForm
 
+class FoodserviceCreateView(CreateView):
+    model = Foodservice
+    form_class = FoodserviceForm
+    template_name = 'food/foodservice/foodservice_form.html'
+    success_url = reverse_lazy('food:dish')
 
 class WorkerFoodservicesView(LoginRequiredMixin, ListView):
     model = Foodservice
-    template_name = "food/worker_account.html"
+    template_name = "food/foodservice/worker_account.html"
     context_object_name = "foodservices"
     
     def get_queryset(self):
@@ -23,7 +28,7 @@ class WorkerFoodservicesView(LoginRequiredMixin, ListView):
 class FoodserviceWorkersView(LoginRequiredMixin, ListView):
     model = User
     context_object_name = "workers"
-    template_name = "food/foodservice_workers.html"
+    template_name = "food/foodservice/foodservice_workers.html"
     
     def get_queryset(self):
         foodservice = Foodservice.objects.get(title=self.kwargs["title"])
@@ -38,7 +43,7 @@ class FoodserviceWorkersView(LoginRequiredMixin, ListView):
     
     
 class FoodserviceWorkerDeleteView(LoginRequiredMixin, DeleteView):
-    template_name = "food/foodservice_workers_delete.html"
+    template_name = "food/foodservice/foodservice_workers_delete.html"
     context_object_name = "foodservice_worker"
     model = FoodserviceWorker
     def form_valid(self, form):
@@ -70,7 +75,7 @@ class FoodserviceWorkerDeleteView(LoginRequiredMixin, DeleteView):
 class FoodserviceWorkerAddView(LoginRequiredMixin, CreateView):
     model = FoodserviceWorker
     form_class = FoodserviceWorkerForm
-    template_name = "food/foodservice_worker_add.html" 
+    template_name = "food/foodservice/foodservice_worker_add.html" 
 
     def form_valid(self, form):
         foodservice = Foodservice.objects.get(title=self.kwargs['title'])
@@ -89,3 +94,24 @@ class FoodserviceWorkerAddView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context['title_2'] = self.kwargs['title'] #Иначе шаблон не видит title
         return context
+    
+class FoodserviceOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    template_name = "food/foodservice/foodservice_orders.html"
+    model = OrderDetails
+    context_object_name = "orders"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.kwargs["title"]
+        return context
+    
+    def test_func(self):
+        foodservice = Foodservice.objects.get(title=self.kwargs["title"])
+        res = FoodserviceWorker.objects.filter(worker=self.request.user, foodservice=foodservice).exists()
+        return res
+    
+    def get_queryset(self):
+        foodservice = Foodservice.objects.get(title=self.kwargs["title"])
+        ordering = '-order__date'
+        return OrderDetails.objects.filter(dish__foodservice=foodservice).select_related('order', 'dish').order_by(ordering)
+    

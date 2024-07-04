@@ -11,7 +11,7 @@ from ..forms import *
 class CreateOrderView(ListView, LoginRequiredMixin):
     model = Dish
     context_object_name = "dishes"
-    template_name="food/order_create.html"
+    template_name="food/order/order_create.html"
     def get_queryset(self):
         foodservice_title = self.kwargs["title"]
         return Dish.objects.filter(foodservice__title=foodservice_title)
@@ -38,4 +38,4 @@ class CreateOrderView(ListView, LoginRequiredMixin):
         return HttpResponseRedirect(reverse_lazy("food:order_create_success"))
     
 class CreateOrderSuccessView(TemplateView):
-    template_name = "food/order_create_success.html"
+    template_name = "food/order/order_create_success.html"
