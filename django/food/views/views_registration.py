@@ -34,7 +34,7 @@ class UserRegistrationFromView(FormView):
         current_site = get_current_site(self.request)
         pk_bytes = force_bytes(user.pk)
         uid = urlsafe_base64_encode(pk_bytes)
-        mail_subject = 'Activate your blog account.'
+        mail_subject = 'Активируйте свой аккаунт.'
         message = render_to_string('registration/acc_activate_email.html', {
             'user': user,
             'domain': current_site.domain,
@@ -55,7 +55,7 @@ class UserLoginFormView(LoginView):
         user = User.objects.get(username=form.cleaned_data["username"])
         
         if user and not user.is_active:
-            form.errors.clear();
+            form.errors.clear()
             form.add_error(None, forms.ValidationError("Пользователь не поддтеврдил Email"))
         
         return super().form_invalid(form)
@@ -78,3 +78,4 @@ class UserActivateView(TemplateView):
         else:
             return HttpResponse('Activation link is invalid!')
         
+    
