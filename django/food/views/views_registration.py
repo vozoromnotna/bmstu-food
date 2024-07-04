@@ -3,7 +3,7 @@ from django.http import HttpRequest
 from django.http.response import HttpResponse as HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView
-from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordResetCompleteView
+from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
 from ..forms import UserRegistrationForm, CustomUserAuthenticationForm
 from django.contrib.sites.shortcuts import get_current_site
