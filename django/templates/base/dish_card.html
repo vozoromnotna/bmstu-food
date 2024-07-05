@@ -1,0 +1,24 @@
+<div class="card m-2">
+    {% if dish.image %}
+        <img src={{ dish.image.url  }} class="card-img-top">
+    {% else %}
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png?20200912122019" class="card-img-top">
+    {% endif %}
+    <div class="card-body">
+        <h5 class="card-title">{{ dish.name }}</h5>
+        <div class="card-text">
+            <p>Цена: {{ dish.price }} р.</p>
+            {% if not is_short %}
+                <p>Калорийность: {{ dish.energy}} Ккал</p>
+                <p>Белки: {{ dish.proteins }} г.</p>
+                <p>Жиры: {{ dish.fat }} г.</p>
+                <p>Углеводы: {{ dish.carbohydrates }} г.</p>
+            {% endif %}
+        </div>
+        {% if is_editable %}
+            <form method="POST" action={{edit_url}}>
+                {% csrf_token %}<input type="submit" class="btn btn-danger" value="Удалить">
+            </form>
+        {% endif %}
+    </div>
+</div>

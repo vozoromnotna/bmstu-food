@@ -84,9 +84,12 @@ class FavoriteFoodservice(models.Model):
 
 
 class Menu(models.Model):
+    foodservice = models.ForeignKey(Foodservice, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True, blank=True)
     def __str__(self):
         return f'{self.date}'
+    class Meta:
+        unique_together = ('foodservice', 'date')
     
 class MenuDetails(models.Model):
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE)

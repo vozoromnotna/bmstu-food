@@ -17,7 +17,7 @@ export default class DishFactory{
 
     #createContainer(dish){
         let cardContainer = document.createElement("div");
-        cardContainer.className = "card";
+        cardContainer.className = "card m-1";
         cardContainer.id = dish.name;
         return cardContainer;
     }
