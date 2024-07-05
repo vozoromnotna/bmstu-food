@@ -41,7 +41,7 @@ class FoodserviceWorkersView(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title_2'] = self.kwargs['title'] #Иначе шаблон не видит title
+        context['title'] = self.kwargs['title'] #Иначе шаблон не видит title
         return context
     
     
@@ -95,7 +95,7 @@ class FoodserviceWorkerAddView(LoginRequiredMixin, CreateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title_2'] = self.kwargs['title'] #Иначе шаблон не видит title
+        context["title"] = self.kwargs["title"]
         return context
     
 class FoodserviceOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
@@ -133,6 +133,7 @@ class FoodserviceDetailView(DetailView):
             'Тип': foodsevice.get_type_display(),
             'Владелец': foodsevice.owner,
         }
+        context["title"] = self.kwargs["title"]
         return context
 
 class FoodserviceUpdateView(UpdateView):
