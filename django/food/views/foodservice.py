@@ -1,12 +1,15 @@
 
+from django.db.models.base import Model as Model
+from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DeleteView, CreateView
+from django.views.generic import ListView, DeleteView, CreateView, DetailView, UpdateView
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import Group
 from ..models import *
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from ..forms import forms, FoodserviceWorkerForm, FoodserviceForm
+from django.shortcuts import get_object_or_404
 
 class FoodserviceCreateView(CreateView):
     model = Foodservice
@@ -114,4 +117,31 @@ class FoodserviceOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListVie
         foodservice = Foodservice.objects.get(title=self.kwargs["title"])
         ordering = '-order__date'
         return OrderDetails.objects.filter(dish__foodservice=foodservice).select_related('order', 'dish').order_by(ordering)
+
+class FoodserviceDetailView(DetailView):
+    template_name = "food/foodservice/foodservice_detail.html"
+    model = Foodservice
+    context_object_name = "foodservice"
+    def get_object(self):
+        return get_object_or_404(Foodservice, title=self.kwargs["title"])
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        foodsevice = context["object"]
+        context["fields"] = {
+            'Название': foodsevice.title,
+            'Тип': foodsevice.get_type_display(),
+            'Владелец': foodsevice.owner,
+        }
+        return context
+
+class FoodserviceUpdateView(UpdateView):
+    template_name = "food/foodservice/foodservice_update.html"
+    model = Foodservice
+    form_class = FoodserviceForm
+    def get_object(self):
+        return get_object_or_404(Foodservice, title=self.kwargs["title"])
+    
+    def get_success_url(self):
+        url = reverse_lazy("food:foodservice_detail", kwargs={"title": self.object.title})
+        return url

@@ -2,9 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class ProductionType(models.TextChoices):
-    WENDING = 'wending', 'Wending'
-    BUFFET = 'buffet', 'Buffet'
-    CAFE = 'cafe', 'Cafe'
+    WENDING = 'wending', 'Вендинг'
+    BUFFET = 'buffet', 'Буфет'
+    CAFE = 'cafe', 'Кафе'
 
 
 class Foodservice(models.Model):

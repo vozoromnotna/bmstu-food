@@ -20,3 +20,7 @@ def is_owner(user, foodservice):
     if type(foodservice) == str:
         foodservice = Foodservice.objects.get(title=foodservice)
     return foodservice.owner == user
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
