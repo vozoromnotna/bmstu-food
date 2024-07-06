@@ -5,17 +5,17 @@
 ```
 docker compose up
 ```  
-После первого запуска рекомендуется создать суперпользователя. Сделать это можно выполнив следующую последовательность команд:  
-Подключение к консоли контейнера для выполнения команд внутри среды развернутого приложения:  
+После первого запуска рекомендуется создать суперпользователяю. Сделать это можно выполнив следующую последовательность команд: 
+1. Подключение к консоли контейнера для выполнения команд внутри среды развернутого приложения:  
 ```
 docker exec -it bmstu-food-django-1
 ```  
-Создание суперпользователя:  
+2. Создание суперпользователя:  
 ```
 python manage.py createsuperuser
 ``` 
-Далее выполняется стандартная процедура создания суперпользователя Django  
-Отладка приложения осуществляется с помощью debugpy на порту 3000  
+Далее выполняется стандартная процедура создания суперпользователя Django.  
+Отладка приложения осуществляется с помощью debugpy на порту 3000.
 Пример конфигурации отладчика:
 ```
 "configurations": [
@@ -53,14 +53,14 @@ POSTGRES_USER: user
 POSTGRES_PASSWORD: password
 POSTGRES_DB: bmstu-food
 ```
-Измените значения DB_USER, DB_PASSWORD, PGADMIN_DEFAULT_EMAIL, PGADMIN_DEFAULT_PASSWORD, POSTGRES_USER, POSTGRES_PASSWORD под свои нужды  
+Измените значения DB_USER, DB_PASSWORD, PGADMIN_DEFAULT_EMAIL, PGADMIN_DEFAULT_PASSWORD, POSTGRES_USER, POSTGRES_PASSWORD под свои нужды.  
 
 Пример содержания файла .env.email:  
 ```
 EMAIL_HOST_USER: bmstufood@gmail.com
 EMAIL_HOST_PASSWORD: 'abcd efgh ijkl mnop'
 ```
-Измените значения EMAIL_HOST_USER, EMAIL_HOST_PASSWORD значениями почты, с которой будет осуществляться рассылка сообщения и API ключом почты соответственно  
+Измените значения EMAIL_HOST_USER, EMAIL_HOST_PASSWORD значениями почты, с которой будет осуществляться рассылка сообщения и API ключом почты соответственно.  
 Развертывание приложения осуществляется с помощью команды:  
 ```
 docker compose -f docker-compose.prop.yaml up
