@@ -51,7 +51,7 @@ class FoodserviceWorker(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True, blank=True)
-
+    
     def __str__(self):
         return f'Order {self.id} by {self.user.username}'
 

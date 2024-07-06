@@ -14,6 +14,7 @@ from ..tokens import account_activation_token
 from django.core.mail import EmailMessage
 import uuid
 from django import forms
+from django.conf import settings
 
 class UserRegistrationDoneView(TemplateView):
     template_name = "registration/registration_done.html"
@@ -28,6 +29,11 @@ class UserRegistrationFromView(FormView):
         password = form.cleaned_data["password"]
         user.set_password(password)
         user.email = form.cleaned_data["email"]
+        
+        if settings.DEBUG:
+            user.save()
+            return super().form_valid(form)
+        
         user.is_active = False
         user.save()
         

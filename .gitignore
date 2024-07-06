@@ -172,3 +172,4 @@ media/
 *.crt
 *.key
 .mypy.ini
+.env.email
