@@ -1,20 +1,22 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-    <h1>Все заказы заведения {{title}}</h1>
-    <table>
-  <tr>
-    <th>Дата</th>
-    <th>Пользователь</th>
-    <th>ID заказа</th>
-  </tr>
-  {% for order in orders %}
-  <tr>
-    <td>{{ order.order.date|date:"d-m-Y" }}</td>
-    <td>{{ order.order.user.username }}</td>
-    <td>{{ order.order.id }}</td>
-    <td><a href="{% url 'food:order_detail' title order.id %}">Детали</a></td>
-  </tr>
-  {% endfor %}
-    </table>
+<h1>Все заказы заведения {{ title }}</h1>
+<table>
+<tr>
+<th>Дата</th>
+<th>Пользователь</th>
+<th>ID заказа</th>
+</tr>
+{% for group in orders %}
+    {% if group %}
+    <tr>
+        <td>{{ group.0.order.date|date:"d-m-Y" }}</td>
+        <td>{{ group.0.order.user.username }}</td>
+        <td>{{ group.0.order.id }}</td>
+        <td><a href="{% url 'food:order_detail' group.0.order.id %}">Детали</a></td>        
+    </tr>
+    {% endif %}
+{% endfor %}
+</table>
 {% endblock %}
