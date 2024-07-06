@@ -3,9 +3,11 @@ from django.views.generic import ListView, DeleteView, DetailView
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Sum, F, DecimalField
-from ..models import Order, FavoriteDish, OrderDetails, Dish, Foodservice
+from ..models import Order, FavoriteDish, OrderDetails, Dish, Foodservice, FoodserviceWorker, FoodserviceRoles
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
+from itertools import groupby
+from operator import attrgetter
 
 class UserOrdersView(LoginRequiredMixin, ListView):
     template_name = "food/orders.html"
@@ -17,19 +19,105 @@ class UserOrdersView(LoginRequiredMixin, ListView):
             total_cost=Sum(F('orderdetails__count') * F('orderdetails__dish__price'), output_field=DecimalField())
         )
 
- # новое  
+
 class UserOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     template_name = "food/orders_list_all.html"
     model = OrderDetails
     context_object_name = "orders"
-    
-    
+
     def test_func(self):
-        return self.request.user.is_authenticated and self.request.user.is_staff
+        if self.request.user.is_authenticated:
+            is_admin = FoodserviceWorker.objects.filter(worker=self.request.user, role=FoodserviceRoles.ADMIN).exists()
+            is_worker = FoodserviceWorker.objects.filter(worker=self.request.user, role=FoodserviceRoles.WORKER).exists()
+            if is_admin or is_worker:
+                return True
+            else:
+                return False
+        else:
+            return False
+
+        #return self.request.user.is_authenticated and self.request.user.is_staff
+
     def get_queryset(self):
         ordering = '-order__date'
-        queryset = OrderDetails.objects.filter(dish__foodservice__owner = self.request.user.id).select_related('order', 'dish').order_by(ordering)
-        return queryset
+        queryset = OrderDetails.objects.filter(dish__foodservice__owner=self.request.user.id).select_related('order', 'dish').order_by(ordering)
+
+        # Группировка заказов по номеру и сортировка по дате
+        grouped_orders = []
+        queryset = sorted(queryset, key=lambda x: (x.order.id, x.order.date), reverse=True)
+        for key, group in groupby(queryset, key=attrgetter('order.id')):
+            grouped_orders.append(list(group))
+
+        return grouped_orders
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.get_queryset():
+            context['foodservice_title'] = self.get_queryset()[0][0].dish.foodservice.title
+        return context
+
+
+# Детали заказа
+class UserOrderDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    template_name = 'food/order_detail.html'   
+    model = Order
+    context_object_name = 'orders'
+
+    def test_func(self):
+        return self.request.user.is_authenticated
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        order = self.get_object()
+        order_details = OrderDetails.objects.filter(order=order)
+        
+        total_amount = sum(detail.dish.price * detail.count for detail in order_details)
+        
+        context['order'] = order
+        context['order_details'] = order_details
+        context['total_amount'] = total_amount
+
+        if self.request.user.is_staff:
+            context['is_staff'] = True
+        else:
+            context['is_staff'] = False
+        return context
+    
+#
+    
+# Список заказов пользователя
+class CommonUserOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    template_name = "food/user_orders_list.html"
+    model = OrderDetails
+    context_object_name = "orders"
+   
+
+    def test_func(self):
+        return self.request.user.is_authenticated
+    
+    def get_queryset(self):
+        ordering = '-order__date'
+        username = self.kwargs['username']
+        if self.request.user.is_staff:
+            queryset = OrderDetails.objects.filter(order__user__username=username).select_related('order', 'dish').order_by(ordering)
+        else:
+            queryset = OrderDetails.objects.filter(order__user=self.request.user).select_related('order', 'dish').order_by(ordering)
+
+        grouped_orders = []
+        queryset = sorted(queryset, key=lambda x: (x.order.id, x.order.date), reverse=True)
+        for key, group in groupby(queryset, key=attrgetter('order.id')):
+            grouped_orders.append(list(group))
+
+        return grouped_orders  
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['foodservice_title'] = self.get_queryset()[0][0].dish.foodservice.title
+        if self.request.user.is_staff:
+            context['is_staff'] = True
+        else:
+            context['is_staff'] = False
+        return context   
 #
     
 class UserFavoriteDishView(LoginRequiredMixin, ListView):

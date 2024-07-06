@@ -17,9 +17,14 @@ urlpatterns = [
     path('foodsevice/<str:title>/workers/', FoodserviceWorkersView.as_view(), name='foodservice_workers'),
     path('foodsevice/<str:title>/workers/delete/<int:user_id>/', FoodserviceWorkerDeleteView.as_view(), name='foodservice_worker_delete'),
     path('foodservice/<str:title>/workers/add/', FoodserviceWorkerAddView.as_view(), name='foodservice_worker_add'),
+    
     path('orders/all/', UserOrdersListView.as_view(), name='orders_list_all'),
     path('orders', UserOrdersView.as_view(), name='orders'),
-    path('orders/all/<int:pk>/', UserOrdersList1View.as_view(), name='order_detail')
+
+    path('orders/all/<int:pk>/', UserOrderDetailView.as_view(), name='order_detail'),
+    #path('orders/yours/', CommonUserOrdersListView.as_view(), name='order_user'),
+    path('orders/<str:username>/', CommonUserOrdersListView.as_view(), name='order_user'),
+
     path('dish/', DishListView.as_view(), name='dish'),
     path('dish/create/', DishCreateView.as_view(), name='dish_form'),
     path('foodservice/create/', FoodserviceCreateView.as_view(), name='foodservice_form'),
