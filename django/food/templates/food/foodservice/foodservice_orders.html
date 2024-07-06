@@ -14,7 +14,7 @@
         <td>{{ group.0.order.date|date:"d-m-Y" }}</td>
         <td>{{ group.0.order.user.username }}</td>
         <td>{{ group.0.order.id }}</td>
-        <td><a href="{% url 'food:order_detail' group.0.order.id %}">Детали</a></td>        
+        <td><a href="{% url 'food:order_detail' title group.0.order.id %}">Детали</a></td>        
     </tr>
     {% endif %}
 {% endfor %}

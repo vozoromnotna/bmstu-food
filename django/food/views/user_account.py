@@ -20,7 +20,6 @@ class UserOrdersView(LoginRequiredMixin, ListView):
         )
 
 
-# Детали заказа
 class UserOrderDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     template_name = 'food/order_detail.html'   
     model = Order
@@ -46,9 +45,7 @@ class UserOrderDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
             context['is_staff'] = False
         return context
     
-#
-    
-# Список заказов пользователя
+
 class CommonUserOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     template_name = "food/user_orders_list.html"
     model = OrderDetails

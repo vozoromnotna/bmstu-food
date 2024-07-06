@@ -10,6 +10,8 @@ from ..models import *
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from ..forms import forms, FoodserviceWorkerForm, FoodserviceForm
 from django.shortcuts import get_object_or_404
+from itertools import groupby
+from operator import attrgetter
 
 class FoodserviceCreateView(CreateView):
     model = Foodservice
@@ -116,7 +118,15 @@ class FoodserviceOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListVie
     def get_queryset(self):
         foodservice = Foodservice.objects.get(title=self.kwargs["title"])
         ordering = '-order__date'
-        return OrderDetails.objects.filter(dish__foodservice=foodservice).select_related('order', 'dish').order_by(ordering)
+        queryset = OrderDetails.objects.filter(dish__foodservice=foodservice).select_related('order', 'dish').order_by(ordering)
+        
+        # Группировка заказов по номеру и сортировка по дате
+        grouped_orders = []
+        queryset = sorted(queryset, key=lambda x: (x.order.id, x.order.date), reverse=True)
+        for key, group in groupby(queryset, key=attrgetter('order.id')):
+            grouped_orders.append(list(group))
+            
+        return grouped_orders
 
 class FoodserviceDetailView(DetailView):
     template_name = "food/foodservice/foodservice_detail.html"
