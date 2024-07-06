@@ -14,7 +14,11 @@
             <br>
         </a>
         <div class="img-preview m-2">
-            <img src={{ dish.image.url }} class="img-fluid" width="400" />
+            {% if dish.image %}
+                <img src={{ dish.image.url }} class="img-fluid" width="400" />
+            {% else %}
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png?20200912122019" class="img-fluid" width="400">
+            {% endif %}
         </div>
         <br>
         Описание: {{ dish.description }}

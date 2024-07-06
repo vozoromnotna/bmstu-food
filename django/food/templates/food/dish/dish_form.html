@@ -6,11 +6,8 @@
     <div class="row">
         <div class="col">
         </div>
-        <form method='post' enctype="multipart/form-data">
-            {% csrf_token %}
-            {{form.as_p}}
-            <input type="submit" value="Submit">
-        </form>
+            {% load template_extras %}
+            {% stylize_form form "Принять" %}
         <div class="col">
         </div>
     </div>

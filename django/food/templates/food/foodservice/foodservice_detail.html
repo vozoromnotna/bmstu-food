@@ -1,0 +1,34 @@
+{% extends "food/foodservice/foodservice_account.html" %}
+{% block title %} {{ foodservice.title }} {% endblock %}
+{% block foodservicecontent %}
+    <div class="container">
+        <div class="row m-3">
+            <div class="col"></div>
+            <div class="col-8">
+                <ul class="list-group ">
+                    {% load template_extras %}
+                    {% for key, value in fields.items %}
+                    <li class="list-group-item">
+                        <div class="fw-bold">
+                            {{ key }}
+                        </div>
+                        <div>
+                            {{ value }}
+                        </div>
+                        
+                    </li>
+                    {% endfor %}
+                    {% if user|is_owner:foodservice%}
+                        <div class="d-flex justify-content-end">
+                            <a href={% url "food:foodservice_update" foodservice.title %} class="list-group-item list-group-item-action">Редактировать</a>
+                        </div>
+                    {% endif %}
+                    
+                    
+                <ul>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+
+{% endblock %}

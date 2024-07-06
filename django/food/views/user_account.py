@@ -10,7 +10,7 @@ from itertools import groupby
 from operator import attrgetter
 
 class UserOrdersView(LoginRequiredMixin, ListView):
-    template_name = "food/orders.html"
+    template_name = "food/user_account/user_orders.html"
     model = Order
     context_object_name = "orders"
 
@@ -18,43 +18,6 @@ class UserOrdersView(LoginRequiredMixin, ListView):
         return Order.objects.filter(user=self.request.user).prefetch_related('orderdetails_set').annotate(
             total_cost=Sum(F('orderdetails__count') * F('orderdetails__dish__price'), output_field=DecimalField())
         )
-
-
-class UserOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    template_name = "food/orders_list_all.html"
-    model = OrderDetails
-    context_object_name = "orders"
-
-    def test_func(self):
-        if self.request.user.is_authenticated:
-            is_admin = FoodserviceWorker.objects.filter(worker=self.request.user, role=FoodserviceRoles.ADMIN).exists()
-            is_worker = FoodserviceWorker.objects.filter(worker=self.request.user, role=FoodserviceRoles.WORKER).exists()
-            if is_admin or is_worker:
-                return True
-            else:
-                return False
-        else:
-            return False
-
-        #return self.request.user.is_authenticated and self.request.user.is_staff
-
-    def get_queryset(self):
-        ordering = '-order__date'
-        queryset = OrderDetails.objects.filter(dish__foodservice__owner=self.request.user.id).select_related('order', 'dish').order_by(ordering)
-
-        # Группировка заказов по номеру и сортировка по дате
-        grouped_orders = []
-        queryset = sorted(queryset, key=lambda x: (x.order.id, x.order.date), reverse=True)
-        for key, group in groupby(queryset, key=attrgetter('order.id')):
-            grouped_orders.append(list(group))
-
-        return grouped_orders
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if self.get_queryset():
-            context['foodservice_title'] = self.get_queryset()[0][0].dish.foodservice.title
-        return context
 
 
 # Детали заказа
@@ -118,10 +81,9 @@ class CommonUserOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListView
         else:
             context['is_staff'] = False
         return context   
-#
-    
+
 class UserFavoriteDishView(LoginRequiredMixin, ListView):
-    template_name = "food/favorite_dish.html"
+    template_name = "food/user_account/favorite_dish.html"
     model = FavoriteDish
     context_object_name = "favorite_dishes"
 

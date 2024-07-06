@@ -4,7 +4,11 @@
 <h1><strong>Название:</strong> {{ dish.name }}</h1>
 <p><strong>Описание:</strong> {{ dish.description }}</p>
 <div class="img-preview m-2">
-    <img src={{ dish.image.url }} class="img-fluid" width="400" />
+    {% if dish.image %}
+        <img src={{ dish.image.url }} class="img-fluid" width="400" />
+    {% else %}
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png?20200912122019" class="img-fluid" width="400">
+    {% endif %}
 </div>
 <p><strong>Заведение:</strong> {{ dish.foodservice }}</p>
 <p><strong>Цена:</strong> {{ dish.price }}</p>

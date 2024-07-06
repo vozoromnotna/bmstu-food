@@ -7,6 +7,10 @@ register = template.Library()
 def stylize_form(form, button_label):
     return {'form': form, 'button_label': button_label }
 
+@register.inclusion_tag('base/dish_card.html')
+def dish_card(dish, is_short, is_editable=False, edit_url=None):
+    return {'dish': dish, 'is_short': is_short, 'is_editable': is_editable, 'edit_url': edit_url }
+
 @register.simple_tag
 def multiply(a, b):
     return a * b
@@ -20,3 +24,7 @@ def is_owner(user, foodservice):
     if type(foodservice) == str:
         foodservice = Foodservice.objects.get(title=foodservice)
     return foodservice.owner == user
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)

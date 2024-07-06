@@ -9,13 +9,13 @@ from ..models import *
 class DishListView(ListView):
     model = Dish
     context_object_name = "dish_list"
-    template_name = "food/dish_list.html"
+    template_name = "food/dish/dish_list.html"
 
 
 class DishCreateView(CreateView):
     model = Dish
     form_class = DishForm
-    template_name = 'food/dish_form.html'
+    template_name = 'food/dish/dish_form.html'
     success_url = reverse_lazy('food:dish')
 
 
@@ -23,14 +23,10 @@ class DishDetailView(DetailView):
     model = Dish
     pk_url_kwarg = 'dish_id'
     context_object_name = "dish"
-    template_name = 'food/dish_detail.html'
+    template_name = 'food/dish/dish_detail.html'
 
 
-class FoodserviceCreateView(CreateView):
-    model = Foodservice
-    form_class = FoodserviceForm
-    template_name = 'food/foodservice_form.html'
-    success_url = reverse_lazy('food:dish')
+
 
 
 class DishDeleteView(DeleteView):
@@ -38,13 +34,13 @@ class DishDeleteView(DeleteView):
     pk_url_kwarg = 'dish_id'
     context_object_name = "dish"
     success_url = reverse_lazy('food:dish')
-    template_name = 'food/dish_confirm_delete.html'
+    template_name = 'food/dish/dish_confirm_delete.html'
 
 
 class DishUpdateView(UpdateView):
     model = Dish
     form_class = DishForm
-    template_name = 'food/dish_update.html'
+    template_name = 'food/dish/dish_update.html'
     pk_url_kwarg = 'dish_id'
 
     def get_success_url(self):

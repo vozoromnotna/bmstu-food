@@ -1,0 +1,16 @@
+{% extends "food/user_account/user_account.html" %}
+
+{% block links %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "food/favorite_dish.css"%}"/>
+{% endblock %}
+
+{% block usercontent  %}
+    <div class="card-holder d-flex flex-wrap m-2">
+        {% load template_extras %}
+        {% for favorite in favorite_dishes %}
+        {% url 'food:favorite_dish_delete' favorite.id as edit_url %}
+        {% dish_card favorite.dish False True edit_url %}
+    {% endfor %}
+    </div>
+{% endblock %}
