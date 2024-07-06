@@ -1,19 +1,23 @@
-{% extends 'base/base.html' %}
+{% extends "base/base.html" %}
+
+{% block links %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "food/menu.css"%}" />
+{% endblock %}
 
 {% block content %}
     <h1>Меню на сегодня</h1>
-    <ul>
+    <div class="d-flex flex-md-row flex-wrap">
+        <!-- <div class="col-sm-4"> -->
+        {% load template_extras %}
         {% for menu in menu_list %}
-            <li>
-                <a href="{% url 'food:dish_detail' menu.dish.id %}">{{ menu }}
-                </a>
-                <br>
-                <a href="{% url 'food:delete_menu' menu.id %}"onclick="return confirm('Вы уверены, что хотите удалить это блюдо из меню?');">Удалить блюдо</a>
-                <br><br>
-            </li>
+        {% url 'food:delete_menu' menu.id as edit_url %}
+        {% dish_card menu.dish False True edit_url %}
         {% endfor %}
-    </ul>
-    <br><br>
-    <a href="{% url 'food:menu_form' %}">Добавить блюдо в меню</a>
-    <br>
+        <!-- </div> -->
+    </div>
+
+<br><br>
+<a class="btn btn-primary" href="{% url 'food:menu_form' %}">Добавить блюдо в меню</a>
+<br>
 {% endblock %}

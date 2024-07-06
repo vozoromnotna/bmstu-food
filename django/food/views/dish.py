@@ -1,15 +1,21 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, CreateView, DetailView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from ..forms import *
 from ..models import *
 
 
-class DishListView(ListView):
+class DishListView(ListView, LoginRequiredMixin, UserPassesTestMixin):
     model = Dish
     context_object_name = "dish_list"
     template_name = "food/dish/dish_list.html"
+
+    def test_func(self):
+        dish = Dish.objects.get(name=self.kwargs["name"])
+        res = FoodserviceWorker.objects.filter(worker=self.request.user, foodservice=foodservice).exists()
+        return res
 
 
 class DishCreateView(CreateView):

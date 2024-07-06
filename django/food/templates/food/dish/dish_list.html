@@ -7,23 +7,23 @@
     <li>
         <a href="{% url 'food:dish_detail' dish.id %}">{{ dish.name }}
             <br>
-            <a href="{% url 'food:update_dish' dish.id %}">Изменить блюдо</a>
-            <br>
-            <a href="{% url 'food:delete_dish' dish.id %}"
-                onclick="return confirm('Вы уверены, что хотите удалить это блюдо?');">Удалить блюдо</a>
-            <br>
         </a>
         <div class="img-preview m-2">
             {% if dish.image %}
-                <img src={{ dish.image.url }} class="img-fluid" width="400" />
+            <img src={{ dish.image.url }} class="img-fluid" width="400" />
             {% else %}
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png?20200912122019" class="img-fluid" width="400">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png?20200912122019"
+                class="img-fluid" width="400">
             {% endif %}
         </div>
-        <br>
         Описание: {{ dish.description }}
-        <br><br>
+        <br>
     </li>
+    <a class="btn btn-warning" href="{% url 'food:update_dish' dish.id %}">Изменить блюдо</a>
+    <br>
+    <a class="btn btn-danger" href="{% url 'food:delete_dish' dish.id %}"
+        onclick="return confirm('Вы уверены, что хотите удалить это блюдо?');">Удалить блюдо</a>
+    <br><br>
     {% endfor %}
 </ul>
 <br><br>
