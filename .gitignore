@@ -171,3 +171,4 @@ media/
 
 *.crt
 *.key
+.mypy.ini
