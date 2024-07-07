@@ -21,12 +21,14 @@ class UserOrdersView(LoginRequiredMixin, ListView):
 
 
 class UserOrderDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
-    template_name = 'food/order_detail.html'   
+    template_name = 'food/order/order_detail.html'   
     model = Order
     context_object_name = 'orders'
 
     def test_func(self):
         return self.request.user.is_authenticated
+    
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -39,15 +41,11 @@ class UserOrderDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         context['order_details'] = order_details
         context['total_amount'] = total_amount
 
-        if self.request.user.is_staff:
-            context['is_staff'] = True
-        else:
-            context['is_staff'] = False
         return context
     
 
 class CommonUserOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    template_name = "food/user_orders_list.html"
+    template_name = "food/user_account/user_orders_list.html"
     model = OrderDetails
     context_object_name = "orders"
    
@@ -72,11 +70,7 @@ class CommonUserOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListView
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['foodservice_title'] = self.get_queryset()[0][0].dish.foodservice.title
-        if self.request.user.is_staff:
-            context['is_staff'] = True
-        else:
-            context['is_staff'] = False
+        context['foodservice_title'] = self.get_queryset()[0][0].dish.foodservice.title        
         return context   
 
 class UserFavoriteDishView(LoginRequiredMixin, ListView):

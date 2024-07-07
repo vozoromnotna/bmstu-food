@@ -1,0 +1,12 @@
+.first_title {
+    font-size: 30px;
+    text-align: center;
+    font-weight: normal;
+}
+.table {
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    max-width: 800px;
+}
+

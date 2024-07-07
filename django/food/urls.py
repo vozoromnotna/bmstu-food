@@ -23,8 +23,6 @@ urlpatterns = [
     
     
     path('orders', UserOrdersView.as_view(), name='orders'),
-    path('orders/<str:username>/', CommonUserOrdersListView.as_view(), name='order_user'),
-    
     
     path('worker_account', WorkerFoodservicesView.as_view(), name='worker_account'),
     
@@ -35,6 +33,10 @@ urlpatterns = [
     
     path('foodservice/<str:title>/workers/', FoodserviceWorkersView.as_view(), name='foodservice_workers'),
     path('foodservice/<str:title>/workers/add/', FoodserviceWorkerAddView.as_view(), name='foodservice_worker_add'),
+
+    path('orders/user/<int:pk>/', UserOrderDetailView.as_view(), name='order_detail'),
+    path('orders/<str:username>/', CommonUserOrdersListView.as_view(), name='user_orders_list'),
+
     path('foodservice/<str:title>/workers/delete/<int:user_id>/', FoodserviceWorkerDeleteView.as_view(), name='foodservice_worker_delete'),
     
     path('foodservice/<str:title>/orders/', FoodserviceOrdersListView.as_view(), name='foodservice_orders'),

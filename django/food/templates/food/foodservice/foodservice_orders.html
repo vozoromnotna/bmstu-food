@@ -2,22 +2,33 @@
 
 {% block foodservicecontent %}
 
-<h1>Все заказы заведения {{ title }}</h1>
-<table>
-<tr>
-<th>Дата</th>
-<th>Пользователь</th>
-<th>ID заказа</th>
-</tr>
-{% for group in orders %}
-    {% if group %}
-    <tr>
-        <td>{{ group.0.order.date|date:"d-m-Y" }}</td>
-        <td>{{ group.0.order.user.username }}</td>
-        <td>{{ group.0.order.id }}</td>
-        <td><a href="{% url 'food:order_detail' title group.0.order.id %}">Детали</a></td>        
-    </tr>
-    {% endif %}
-{% endfor %}
-</table>
+{% block links %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "food/foodservice_orders.css"%}"/>
 {% endblock %}
+
+{% block content %}
+<h1 class = "first_title">Заказы заведения {{ title }}</h1>
+
+<table class = "table table-bordered border-primary border border-3">
+        
+    <tr class = "table-primary table-bordered border-primary ">
+    <th class="fw-medium">Дата</th>
+    <th class="fw-medium">Пользователь</th>
+    <th class="fw-medium">Номер заказа</th>
+    <th class="fw-medium">Подробнее</th>
+    </tr>
+    
+    {% for group in orders %}
+        {% if group %}
+        <tr class = "column">
+            <td> {{ group.0.order.date|date:"d-m-Y" }}</td>
+            <td>{{ group.0.order.user.username }}</td>
+            <td>{{ group.0.order.id }}</td>
+            <td><a href="{% url 'food:order_detail' group.0.order.id %}"  class="btn btn-primary btn-sm">Детали</a></td>       
+        </tr>
+        {% endif %}
+    {% endfor %}
+    
+    </table>
+    {% endblock %}
