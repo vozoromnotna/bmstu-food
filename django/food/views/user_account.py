@@ -26,19 +26,29 @@ class UserOrderDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     context_object_name = 'orders'
 
     def test_func(self):
-        return self.request.user.is_authenticated
-    
-
+        self.order: Order = self.get_object()
+        self.order_details: QuerySet = OrderDetails.objects.filter(order=self.order)
+        
+        if self.request.user.is_staff:
+            return True
+        
+        if self.order.user == self.request.user:
+            return True
+        
+        if self.order_details.exists():
+            foodservice = self.order_details.first().dish.foodservice
+            if FoodserviceWorker.objects.filter(foodservice=foodservice, worker=self.request.user):
+                return True
+            
+        return False
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        order = self.get_object()
-        order_details = OrderDetails.objects.filter(order=order)
         
-        total_amount = sum(detail.dish.price * detail.count for detail in order_details)
+        total_amount = sum(detail.dish.price * detail.count for detail in self.order_details)
         
-        context['order'] = order
-        context['order_details'] = order_details
+        context['order'] = self.order
+        context['order_details'] = self.order_details
         context['total_amount'] = total_amount
 
         return context
@@ -48,10 +58,9 @@ class CommonUserOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListView
     template_name = "food/user_account/user_orders_list.html"
     model = OrderDetails
     context_object_name = "orders"
-   
 
     def test_func(self):
-        return self.request.user.is_authenticated
+        return self.request.user.is_staff or self.request.user.username == self.kwargs["username"]
     
     def get_queryset(self):
         ordering = '-order__date'
@@ -68,10 +77,6 @@ class CommonUserOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListView
 
         return grouped_orders  
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['foodservice_title'] = self.get_queryset()[0][0].dish.foodservice.title        
-        return context   
 
 class UserFavoriteDishView(LoginRequiredMixin, ListView):
     template_name = "food/user_account/favorite_dish.html"

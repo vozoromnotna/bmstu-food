@@ -5,9 +5,8 @@
 {% block links %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static "food/foodservice_orders.css"%}"/>
-{% endblock %}
+{% endblock links %}
 
-{% block content %}
 <h1 class = "first_title">Заказы заведения {{ title }}</h1>
 
 <table class = "table table-bordered border-primary border border-3">
@@ -30,5 +29,5 @@
         {% endif %}
     {% endfor %}
     
-    </table>
-    {% endblock %}
+</table>
+{% endblock foodservicecontent %}

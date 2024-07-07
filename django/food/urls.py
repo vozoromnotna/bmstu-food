@@ -14,8 +14,8 @@ urlpatterns = [
     path('registration/activate/<str:uidb64>/<str:token>/', UserActivateView.as_view(), name='activate'),
     path('registr_done', UserRegistrationDoneView.as_view(), name='registration_done'),
     
-    path('login', UserLoginFormView.as_view(), name='login'),
-    path('logout', LogoutView.as_view(), name='logout'),
+    path('accounts/login/', UserLoginFormView.as_view(), name='login'),
+    path('accounts/logout/', LogoutView.as_view(), name='logout'),
     
     
     path('favorite_dish', UserFavoriteDishView.as_view(), name='favorite_dish'),
