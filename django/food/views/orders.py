@@ -37,5 +37,10 @@ class CreateOrderView(ListView, LoginRequiredMixin):
         
         return HttpResponseRedirect(reverse_lazy("food:order_create_success"))
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.kwargs["title"]
+        return context
+    
 class CreateOrderSuccessView(TemplateView):
     template_name = "food/order/order_create_success.html"

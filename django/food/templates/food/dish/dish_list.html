@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-<h1>Список всех блюд</h1>
+<h1>Список блюд заведения {{ title }}</h1>
 <ul>
     {% for dish in dish_list %}
     <li>
@@ -27,7 +27,7 @@
     {% endfor %}
 </ul>
 <br><br>
-<a href="{% url 'food:dish_form' %}">Добавить блюдо</a>
+<a href="{% url 'food:dish_form' title %}">Добавить блюдо</a>
 <br>
 <!--    <a href="{% url 'food:foodservice_form' %}">Добавить заведение</a>-->
 {% endblock %}

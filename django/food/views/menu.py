@@ -3,7 +3,7 @@ from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, CreateView, DetailView, UpdateView
-
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from ..forms import *
 from ..models import *
 
@@ -14,6 +14,11 @@ class MenuListView(ListView):
     model = MenuDetails
     context_object_name = "menu_list"
     template_name = "food/menu/menu_list.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.kwargs["title"]
+        return context
 
     def get_queryset(self):
         menus = Menu.objects.only('id').filter(date = datetime.date.today())
@@ -36,6 +41,10 @@ class MenuCreateView(CreateView):
                 form.add_error("dish", forms.ValidationError(f"{dish} уже есть в меню на {menu}"))
                 return super().form_invalid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.kwargs["title"]
+        return context
 
 class MenuDeleteView(DeleteView):
     model = MenuDetails
