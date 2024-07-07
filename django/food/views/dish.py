@@ -27,6 +27,11 @@ class DishListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     def test_func(self):
         return FoodserviceWorker.objects.filter(worker=self.request.user, foodservice__title=self.kwargs["title"]).exists()
 
+    def test_func(self):
+        dish = Dish.objects.get(name=self.kwargs["name"])
+        res = FoodserviceWorker.objects.filter(worker=self.request.user, foodservice=foodservice).exists()
+        return res
+
 
 class DishCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Dish

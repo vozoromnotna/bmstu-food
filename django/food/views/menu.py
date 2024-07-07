@@ -1,3 +1,5 @@
+import datetime
+from django.db.models.query import QuerySet
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DeleteView, CreateView, DetailView, UpdateView
@@ -18,6 +20,10 @@ class MenuListView(ListView):
         context["title"] = self.kwargs["title"]
         return context
 
+    def get_queryset(self):
+        menus = Menu.objects.only('id').filter(date = datetime.date.today())
+        return MenuDetails.objects.filter(menu__in=menus)
+
 
 # logger = logging.getLogger('__name__')
 
@@ -30,10 +36,10 @@ class MenuCreateView(CreateView):
     def form_invalid(self, form):
         dish = form.cleaned_data['dish']
         menu = form.cleaned_data['menu']
-
         if MenuDetails.objects.filter(dish=dish).exists():
-            form.add_error("dish", forms.ValidationError(f"{dish} уже есть в меню на {menu}"))
-            return super().form_invalid(form)
+            if MenuDetails.objects.filter(menu=menu).exists():
+                form.add_error("dish", forms.ValidationError(f"{dish} уже есть в меню на {menu}"))
+                return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -46,11 +52,3 @@ class MenuDeleteView(DeleteView):
     context_object_name = "menu_list"
     success_url = reverse_lazy('food:menu')
     template_name = 'food/menu/menu_confirm_delete.html'
-
-
-
-# class MenuDetailView(DetailView):
-#     model = MenuDetails
-#     pk_url_kwarg = 'menu_id'
-#     context_object_name = "menu"
-#     template_name = 'food/menu_detail.html'
