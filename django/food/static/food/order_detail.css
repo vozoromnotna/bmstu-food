@@ -1,0 +1,18 @@
+.first_title {
+    font-size: 30px;
+    text-align: center;
+    font-weight: normal;
+}
+.table {
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    max-width: 800px;
+}
+.total_amount {
+    text-align: right;
+    position:relative;
+    right: 260px;
+    font-size: 20px;
+    font-weight:normal;    
+}

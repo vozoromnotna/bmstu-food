@@ -19,12 +19,18 @@ urlpatterns = [
     path('foodsevice/<str:title>/workers/', FoodserviceWorkersView.as_view(), name='foodservice_workers'),
     path('foodsevice/<str:title>/workers/delete/<int:user_id>/', FoodserviceWorkerDeleteView.as_view(), name='foodservice_worker_delete'),
     path('foodservice/<str:title>/workers/add/', FoodserviceWorkerAddView.as_view(), name='foodservice_worker_add'),
-    path('orders/all/<int:pk>/', UserOrderDetailView.as_view(), name='order_detail'),
-    #path('orders/yours/', CommonUserOrdersListView.as_view(), name='order_user'),
-    path('orders/<str:username>/', CommonUserOrdersListView.as_view(), name='order_user'),
+
+    #path('orders/<str:username>/<int:pk>/', UserOrderDetailView.as_view(), name='order_detail'),
+    path('orders/user/<int:pk>/', UserOrderDetailView.as_view(), name='order_detail'),
+    
+    #path('orders/<str:username>/', CommonUserOrdersListView.as_view(), name='orders_list'),
+    path('orders/<str:username>/', CommonUserOrdersListView.as_view(), name='user_orders_list'),
+
     path('foodservice/<str:title>/orders/', FoodserviceOrdersListView.as_view(), name='foodservice_orders'),
     path('foodservice/<str:title>/orders/create/', CreateOrderView.as_view(), name='order_create'),
-    path('orders', UserOrdersView.as_view(), name='orders'),
+
+    #path('orders/', UserOrdersView.as_view(), name='orders'),
+
     path('foodservice/<str:title>/orders/<int:pk>/', FoodserviceOrdersListView.as_view(), name='order_detail'),
     path('dish/', DishListView.as_view(), name='dish'),
     path('dish/create/', DishCreateView.as_view(), name='dish_form'),
