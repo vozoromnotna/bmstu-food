@@ -26,7 +26,7 @@
                                         {% dish_card menudetail.dish True %}
                                     {% endfor %}
                                 </div>
-                                <a class="btn btn-primary ms-auto" href={% url "food:menu" %}>Больше</a>
+                                <a class="btn btn-primary ms-auto" href={% url "food:menu" foodservice.title %}>Больше</a>
                             {% else %}
                                     <div>На сегодня блюд нет =(</div>
                             {% endif%}

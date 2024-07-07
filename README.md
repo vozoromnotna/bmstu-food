@@ -41,7 +41,7 @@ python manage.py createsuperuser
 Необходимо создать файлы окружения .env.prod и .env.email в корневой директории репозитория.  
 Пример содержания файла .env.prod:  
 ```
-DEBUG=1
+DEBUG=0
 DB_USER: user
 DB_PASSWORD: password
 DB_NAME: bmstu-food

@@ -33,11 +33,39 @@ class FoodserviceWorkerForm(forms.ModelForm):
         return cd["username"]
 
 class FoodserviceForm(forms.ModelForm):
+    owner_username = forms.CharField(max_length=150, label="Логин владельца")
     class Meta:
         model = Foodservice
-        fields = ['title', 'type', 'owner']
+        fields = ['title', 'type', 'owner_username']
         labels = {
             'title': _('Название'),
             'type': _('Тип заведения'),
-            'owner': _('Владелец')
         }
+        
+    def clean_owner_username(self):
+        cd = self.cleaned_data
+        user = User.objects.filter(username=cd["owner_username"])
+        if not user.exists():
+            raise forms.ValidationError("Такого пользователя не существует")
+        
+        
+        return cd["owner_username"]
+    
+    def save(self, commit=True):
+        user_owner = User.objects.get(username=self.cleaned_data['owner_username'])
+        foodservice = super().save(commit=False)
+        foodservice.owner = user_owner
+        
+        if commit:
+            foodservice.save()
+            foodservice_worker = FoodserviceWorker(foodservice=foodservice, worker=user_owner, role=FoodserviceRoles.ADMIN)
+            
+            try:
+                foodservice_worker.save()
+            except:
+                pass
+                
+            workers_group = Group.objects.get(name="workers")
+            workers_group.user_set.add(user_owner)
+    
+        return foodservice
