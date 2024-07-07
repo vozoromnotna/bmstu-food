@@ -1,6 +1,6 @@
-{% extends 'base/base.html' %}
+{% extends "food/foodservice/foodservice_account.html" %}
 
-{% block content %}
+{% block foodservicecontent %}
 <h1>Список блюд заведения {{ title }}</h1>
 <ul>
     {% for dish in dish_list %}

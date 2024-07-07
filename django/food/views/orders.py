@@ -4,9 +4,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 import json
+from datetime import date
 
 from ..models import *
 from ..forms import *
+
 
 class CreateOrderView(ListView, LoginRequiredMixin):
     model = Dish
@@ -14,7 +16,7 @@ class CreateOrderView(ListView, LoginRequiredMixin):
     template_name="food/order/order_create.html"
     def get_queryset(self):
         foodservice_title = self.kwargs["title"]
-        return Dish.objects.filter(foodservice__title=foodservice_title)
+        return Dish.objects.filter(foodservice__title=foodservice_title, menudetails__menu__date=date.today()).prefetch_related("menudetails_set")
     
     
     def post(self, request, *args, **kwargs):

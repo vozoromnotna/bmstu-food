@@ -52,7 +52,7 @@ urlpatterns = [
     
     path('foodservice/<str:title>/menu/', MenuListView.as_view(), name='menu'),
     path('foodservice/<str:title>/menu/create/', MenuCreateView.as_view(), name='menu_form'),
-    path('foodservice/<str:title>/menu/<int:menu_id>/delete/', MenuDeleteView.as_view(), name='delete_menu'),
+    path('menu/<int:pk>/delete/', MenuDeleteView.as_view(), name='delete_menu'),
     
     
 ]

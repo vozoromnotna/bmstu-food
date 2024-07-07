@@ -1,11 +1,12 @@
-{% extends "base/base.html" %}
+{% extends "food/foodservice/foodservice_account.html" %}
+
 
 {% block links %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static "food/menu.css"%}" />
 {% endblock %}
 
-{% block content %}
+{% block foodservicecontent %}
     <h1>Меню на сегодня</h1>
     <div class="d-flex flex-md-row flex-wrap">
         <!-- <div class="col-sm-4"> -->
@@ -18,6 +19,6 @@
     </div>
 
 <br><br>
-<a class="btn btn-primary" href="{% url 'food:menu_form' %}">Добавить блюдо в меню</a>
+<a class="btn btn-primary" href="{% url 'food:menu_form' title %}">Добавить блюдо в меню</a>
 <br>
 {% endblock %}

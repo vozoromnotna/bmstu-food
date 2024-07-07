@@ -1,20 +1,20 @@
 from django import forms
-from ..models import MenuDetails, OrderDetails
+from ..models import MenuDetails, OrderDetails, Dish
 from django.utils.translation import gettext_lazy as _
 
 class MenuForm(forms.ModelForm):
-    # dish = forms.CharField(max_length=150, label="Блюдо")
-    # menu = forms.CharField(max_length=150, label="Меню")
-
-
     class Meta:
         model = MenuDetails
-        fields = ['dish', 'menu']
+        fields = ['dish']
         labels = {
             'dish': _('Блюдо'),
-            'menu': _('Меню')
         }
-
+    def __init__(self, *args, **kwargs):
+        foodservice = kwargs.pop('foodservice', None)
+        super(MenuForm, self).__init__(*args, **kwargs)
+        if foodservice:
+            self.fields['dish'].queryset = Dish.objects.filter(foodservice=foodservice)
+            
 class CreateOrderForm(forms.ModelForm):
     username = forms.CharField(max_length=150, label="Логин пользователя")
     
