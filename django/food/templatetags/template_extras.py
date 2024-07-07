@@ -21,12 +21,16 @@ def has_group(user, group_name):
 
 @register.filter(name='is_owner') 
 def is_owner(user, foodservice):
+    if (not user.is_authenticated):
+        return False
     if type(foodservice) == str:
         foodservice = Foodservice.objects.get(title=foodservice)
     return foodservice.owner == user
 
 @register.filter(name='is_worker') 
 def is_worker(user, foodservice):
+    if (not user.is_authenticated):
+        return False
     if type(foodservice) == str:
         foodservice = Foodservice.objects.get(title=foodservice)
     return FoodserviceWorker.objects.filter(worker=user, foodservice=foodservice).exists()
