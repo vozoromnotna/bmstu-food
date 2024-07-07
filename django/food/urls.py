@@ -43,16 +43,16 @@ urlpatterns = [
     path('foodservice/<str:title>/orders/<int:pk>/', UserOrderDetailView.as_view(), name='order_detail'),
     
     
-    path('dish/', DishListView.as_view(), name='dish'),
-    path('dish/create/', DishCreateView.as_view(), name='dish_form'),
+    path('foodservice/<str:title>/dish/', DishListView.as_view(), name='dish'),
+    path('foodservice/<str:title>/dish/create/', DishCreateView.as_view(), name='dish_form'),
     path('dish/<int:dish_id>/', DishDetailView.as_view(), name='dish_detail'),
     path('dish/<int:dish_id>/delete/', DishDeleteView.as_view(), name='delete_dish'),
     path('dish/<int:dish_id>/update/', DishUpdateView.as_view(), name='update_dish'),
     
     
-    path('menu/', MenuListView.as_view(), name='menu'),
-    path('menu/create/', MenuCreateView.as_view(), name='menu_form'),
-    path('menu/<int:menu_id>/delete/', MenuDeleteView.as_view(), name='delete_menu'),
+    path('foodservice/<str:title>/menu/', MenuListView.as_view(), name='menu'),
+    path('foodservice/<str:title>/menu/create/', MenuCreateView.as_view(), name='menu_form'),
+    path('foodservice/<str:title>/menu/<int:menu_id>/delete/', MenuDeleteView.as_view(), name='delete_menu'),
     
     
 ]
