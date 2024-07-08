@@ -34,4 +34,5 @@ urlpatterns = [
     path('menu/<int:menu_id>/delete/', MenuDeleteView.as_view(), name='delete_menu'),
     path('orders/create/success/', CreateOrderSuccessView.as_view(), name='order_create_success'),
     path('registration/activate/<str:uidb64>/<str:token>/', UserActivateView.as_view(), name='activate'),
+    path('menu/add_favorite/', FavoriteCreateView.as_view(), name='favorite_form'),
 ]
