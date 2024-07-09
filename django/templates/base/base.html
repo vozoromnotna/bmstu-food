@@ -21,11 +21,11 @@
                         Пользователь: {{user.get_username}}
                     </div>
                     <div class="p-2 ">
-                        <a href={% url "food:favorite_dish" %} class="btn btn-primary btn-lg">Личный кабинет</a>
+                        <a href="{% url "food:favorite_dish" %}" class="btn btn-primary btn-lg">Личный кабинет</a>
                     </div>
                     {% if user|has_group:"workers" %}
                     <div class="p-2">
-                        <a href={% url "food:worker_account" %} class="btn btn-primary btn-lg">Управление заведением</a>
+                        <a href="{% url "food:worker_account" %}" class="btn btn-primary btn-lg">Управление заведением</a>
                     </div>
                     {% endif %}
                     <div class="p-2">
@@ -37,10 +37,10 @@
                     
                 {% else %}
                     <div class="p-2 ">
-                        <a href={% url "food:login" %} class="btn btn-primary btn-lg">Войти</a>
+                        <a href="{% url "food:login" %}" class="btn btn-primary btn-lg">Войти</a>
                     </div>
                     <div class="p-2">
-                        <a href={% url "food:registration"  %} class="btn btn-primary btn-lg">Зарегистрироваться</a>
+                        <a href="{% url "food:registration"  %}" class="btn btn-primary btn-lg">Зарегистрироваться</a>
                     </div>
                     
                 {% endif %}

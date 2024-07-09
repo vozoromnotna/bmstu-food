@@ -15,7 +15,7 @@
         {% url 'food:delete_dish' dish.id as delete_url %}
         {% url 'food:update_dish' dish.id as edit_url %}
         {% url 'food:dish_detail' dish.id as more_url %}
-        {% dish_card dish is_description=True is_deletable=True delete_url=delete_url is_editable=True edit_url=edit_url is_more=True more_url=more_url%}
+        {% dish_card dish=dish cur_url=request.path is_description=True is_deletable=True delete_url=delete_url is_editable=True edit_url=edit_url is_more=True more_url=more_url%}
     {% endfor %}
 </div>
 <br><br>

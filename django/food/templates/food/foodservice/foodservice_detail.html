@@ -20,7 +20,7 @@
                     {% endfor %}
                     {% if user|is_owner:foodservice%}
                         <div class="d-flex justify-content-end">
-                            <a href={% url "food:foodservice_update" foodservice.title %} class="list-group-item list-group-item-action">Редактировать</a>
+                            <a href="{% url "food:foodservice_update" foodservice.title %}" class="list-group-item list-group-item-action">Редактировать</a>
                         </div>
                     {% endif %}
                     
