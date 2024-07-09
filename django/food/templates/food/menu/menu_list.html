@@ -3,7 +3,7 @@
 
 {% block links %}
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static "food/menu.css"%}" />
+    <link rel="stylesheet" type="text/css" href="{% static " food/menu.css"%}" />
 {% endblock %}
 
 {% block foodservicecontent %}
@@ -21,4 +21,16 @@
 <br><br>
 <a class="btn btn-primary" href="{% url 'food:menu_form' title %}">Добавить блюдо в меню</a>
 <br>
+<a class="btn btn-primary" href="{% url 'food:menu_form' %}">Добавить блюдо в меню</a>
+<br><br>
+<a class="btn btn-primary" href="{% url 'food:favorite_form' %}">Добавить блюдо в избранное</a>
+<br><br>
+<div class="d-flex flex-md-row flex-wrap m-2">
+    {% load template_extras %}
+    {% for menu in menu_list %}
+    {% url 'food:delete_menu' menu.id as edit_url %}
+    {% dish_card menu.dish False True edit_url %}
+    {% endfor %}
+</div>
+
 {% endblock %}

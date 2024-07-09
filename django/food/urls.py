@@ -51,10 +51,9 @@ urlpatterns = [
     path('dish/<int:dish_id>/delete/', DishDeleteView.as_view(), name='delete_dish'),
     path('dish/<int:dish_id>/update/', DishUpdateView.as_view(), name='update_dish'),
     
-    
+    path('foodservice/<str:title>/menu/add_favorite/', FavoriteCreateView.as_view(), name='favorite_form'),
     path('foodservice/<str:title>/menu/', MenuListView.as_view(), name='menu'),
     path('foodservice/<str:title>/menu/create/', MenuCreateView.as_view(), name='menu_form'),
     path('menu/<int:pk>/delete/', MenuDeleteView.as_view(), name='delete_menu'),
-    
     
 ]
