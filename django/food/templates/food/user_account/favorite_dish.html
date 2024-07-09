@@ -6,7 +6,8 @@
 {% endblock %}
 
 {% block usercontent  %}
-    <div class="card-holder d-flex flex-wrap m-2">
+    <h1>Избранные блюда</h1>
+    <div class="card-holder d-flex flex-wrap m-3">
         {% load template_extras %}
         {% for favorite in favorite_dishes %}
             {% url 'food:favorite_dish_delete' user.id favorite.dish.id as delete_url %}

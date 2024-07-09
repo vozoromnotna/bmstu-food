@@ -7,9 +7,9 @@
     <link rel="stylesheet" type="text/css" href="{% static "food/foodservice_orders.css"%}"/>
 {% endblock links %}
 
-<h1 class = "first_title">Заказы заведения {{ title }}</h1>
+<h1>Заказы заведения {{ title }}</h1>
 
-<table class = "table table-bordered border-primary border border-3">
+<table class="table table-bordered border-primary border border-3">
         
     <tr class = "table-primary table-bordered border-primary ">
     <th class="fw-medium">Дата</th>
@@ -20,7 +20,7 @@
     
     {% for group in orders %}
         {% if group %}
-        <tr class = "column">
+        <tr class="column">
             <td> {{ group.0.order.date|date:"d-m-Y" }}</td>
             <td>{{ group.0.order.user.username }}</td>
             <td>{{ group.0.order.id }}</td>
