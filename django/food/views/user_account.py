@@ -54,7 +54,7 @@ class UserOrderDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return context
     
 
-class CommonUserOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+class UserOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     template_name = "food/user_account/user_orders_list.html"
     model = OrderDetails
     context_object_name = "orders"

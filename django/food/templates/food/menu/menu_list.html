@@ -3,34 +3,24 @@
 
 {% block links %}
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static " food/menu.css"%}" />
+    <link rel="stylesheet" type="text/css" href="{% static "food/favorite_dish.css"%}" />
 {% endblock %}
 
 {% block foodservicecontent %}
     <h1>Меню на сегодня</h1>
     <div class="d-flex flex-md-row flex-wrap">
-        <!-- <div class="col-sm-4"> -->
         {% load template_extras %}
         {% for menu in menu_list %}
-        {% url 'food:delete_menu' menu.id as edit_url %}
-        {% dish_card menu.dish False True edit_url %}
+            {% url 'food:delete_menu' menu.id as delete_url %}
+            {% url 'food:dish_detail' menu.dish.id as more_url %}
+            {% dish_card dish=menu.dish is_description=True is_deletable=True delete_url=delete_url is_to_favorite=True favorite_status=False is_more=True more_url=more_url %}
         {% endfor %}
-        <!-- </div> -->
     </div>
 
 <br><br>
 <a class="btn btn-primary" href="{% url 'food:menu_form' title %}">Добавить блюдо в меню</a>
-<br>
-<a class="btn btn-primary" href="{% url 'food:menu_form' %}">Добавить блюдо в меню</a>
 <br><br>
-<a class="btn btn-primary" href="{% url 'food:favorite_form' %}">Добавить блюдо в избранное</a>
+<a class="btn btn-primary" href="{% url 'food:favorite_form' title %}">Добавить блюдо в избранное</a>
 <br><br>
-<div class="d-flex flex-md-row flex-wrap m-2">
-    {% load template_extras %}
-    {% for menu in menu_list %}
-    {% url 'food:delete_menu' menu.id as edit_url %}
-    {% dish_card menu.dish False True edit_url %}
-    {% endfor %}
-</div>
 
 {% endblock %}

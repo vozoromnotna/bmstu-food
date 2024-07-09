@@ -7,18 +7,42 @@
     <div class="card-body">
         <h5 class="card-title">{{ dish.name }}</h5>
         <div class="card-text">
-            <p>Цена: {{ dish.price }} р.</p>
-            {% if not is_short %}
+            <p>{{ dish.price }} р.</p>
+            {% if is_description %}
+                <p>{{ dish.description }}</p>
+            {% endif %}
+            {% if is_calorie %}
                 <p>Калорийность: {{ dish.energy}} Ккал</p>
                 <p>Белки: {{ dish.proteins }} г.</p>
                 <p>Жиры: {{ dish.fat }} г.</p>
                 <p>Углеводы: {{ dish.carbohydrates }} г.</p>
             {% endif %}
         </div>
-        {% if is_editable %}
-            <form method="POST" action={{edit_url}}>
-                {% csrf_token %}<input type="submit" class="btn btn-danger" value="Удалить">
-            </form>
-        {% endif %}
     </div>
+    <ul class="list-group list-group-flush border border-0">
+        {% if is_more %}
+                <a class="list-group-item list-group-item-action border border-bottom-0 border-start-0 border-end-0" href={{ more_url }}>Подробнее</a>
+        {% endif %}
+        {% if is_to_favorite %}
+                {% if favorite_status %}
+                    <form method="POST" action={{ to_favorite_url }}>
+                        {% csrf_token %}<input type="submit" class="list-group-item list-group-item-action border border-bottom-0 border-start-0 border-end-0" value="Убрать из избранного">
+                    </form>
+                {% else %}
+                    <form  method="POST" action={{ to_favorite_url }}>
+                        {% csrf_token %}<input class="list-group-item list-group-item-action border border-bottom-0 border-start-0 border-end-0" type="submit"  value="В избранное">
+                    </form>
+            {% endif %}
+
+        {% endif %}
+        {% if is_editable %}
+                <a class="list-group-item list-group-item-action border border-bottom-0 border-start-0 border-end-0" href={{ edit_url }}>Изменить</a>
+        {% endif %}
+        {% if is_deletable %}
+                <form method="POST" action={{ delete_url }}>
+                    {% csrf_token %}<input class="list-group-item list-group-item-action border border-bottom-0 border-start-0 border-end-0" onclick="return confirm('Вы уверены, что хотите удалить это блюдо?');" type="submit" class="btn btn-danger" value="Удалить">
+                </form>
+        {% endif %}
+        
+    </ul>
 </div>

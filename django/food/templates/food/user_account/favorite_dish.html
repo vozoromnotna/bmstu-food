@@ -9,8 +9,8 @@
     <div class="card-holder d-flex flex-wrap m-2">
         {% load template_extras %}
         {% for favorite in favorite_dishes %}
-        {% url 'food:favorite_dish_delete' favorite.id as edit_url %}
-        {% dish_card favorite.dish False True edit_url %}
-    {% endfor %}
+            {% url 'food:favorite_dish_delete' favorite.id as delete_url %}
+            {% dish_card favorite.dish is_description=True is_calorie=True is_deletable=True delete_url=delete_url %}
+        {% endfor %}
     </div>
 {% endblock %}

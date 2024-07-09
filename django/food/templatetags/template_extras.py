@@ -8,8 +8,10 @@ def stylize_form(form, button_label):
     return {'form': form, 'button_label': button_label }
 
 @register.inclusion_tag('base/dish_card.html')
-def dish_card(dish, is_short, is_editable=False, edit_url=None):
-    return {'dish': dish, 'is_short': is_short, 'is_editable': is_editable, 'edit_url': edit_url }
+def dish_card(dish, is_description=False, is_calorie=False, is_deletable=False, is_editable=False,
+              is_to_favorite=False, delete_url=None, edit_url=None, to_favorite_url=None,
+              favorite_status=False, is_more=False, more_url=None):
+    return locals()
 
 @register.simple_tag
 def multiply(a, b):
