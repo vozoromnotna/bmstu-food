@@ -1,6 +1,43 @@
 {% extends "base/base.html" %}
+
+{% block links %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "food/index_dish.css"%}"/>
+{% endblock %}
+
+{% block title %}BMSTU Food{% endblock %}
+
 {% block content  %}
 <div>
     <h1>Главная страница</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-8">
+                <ul class="list-group">
+                    {% load template_extras %}
+                    {% for foodservice in foodservices %}
+                    <li class="list-group-item">
+                        <div class="d-flex flex-column">
+                            <h2>{{ foodservice.title }}</h2>
+                            {% if foodservice.menu_set.all.first.menudetails_set.all %}
+                                <div class="card-holder d-flex flex-wrap m-2">
+                                    {% for menudetail in foodservice.menu_set.all.first.menudetails_set.all %}
+                                        {% dish_card menudetail.dish True %}
+                                    {% endfor %}
+                                </div>
+                                <a class="btn btn-primary ms-auto" href={% url "food:menu" foodservice.title %}>Больше</a>
+                            {% else %}
+                                    <div>На сегодня блюд нет =(</div>
+                            {% endif%}
+                        </div>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+    
 </div>
 {% endblock  %}

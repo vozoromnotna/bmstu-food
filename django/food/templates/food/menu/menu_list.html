@@ -1,0 +1,37 @@
+{% extends "food/foodservice/foodservice_account.html" %}
+
+
+{% block links %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "food/favorite_dish.css"%}" />
+{% endblock %}
+
+{% block foodservicecontent %}
+    <h1>Меню на сегодня</h1>
+    <div class="d-flex flex-md-row flex-wrap">
+        {% load template_extras %}
+        {% for menu in menu_list %}
+            {% url 'food:delete_menu' menu.id as delete_url %}
+            {% url 'food:dish_detail' menu.dish.id as more_url %}
+            
+            {% if user.is_authenticated %}
+                {% if menu.dish|is_in_favorite:user %}
+                    {% url 'food:favorite_dish_delete' user_id=user.id dish_id=menu.dish.id as favorite_url %}
+                {% else %}
+                    {% url 'food:favorite_dish_add' user_id=user.id dish_id=menu.dish.id as favorite_url %}
+                {% endif %}
+                
+                {% dish_card dish=menu.dish cur_url=request.path is_description=True is_deletable=user|is_worker:title delete_url=delete_url is_to_favorite=True favorite_url=favorite_url favorite_status=menu.dish|is_in_favorite:user is_more=True more_url=more_url %}
+            {% else %}
+            
+                {% dish_card dish=menu.dish cur_url=request.path is_description=True is_deletable=user|is_worker:title delete_url=delete_url is_more=True more_url=more_url %}
+
+            {% endif %}
+        {% endfor %}
+    </div>
+
+<br><br>
+<a class="btn btn-primary" href="{% url 'food:menu_form' title %}">Добавить блюдо в меню</a>
+<br><br>
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "food/foodservice/foodservice_account.html" %}
+
+{% block links %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "food/favorite_dish.css"%}" />
+{% endblock %}
+
+{% block foodservicecontent %}
+<h1>Список блюд заведения {{ title }}</h1>
+
+<div class="d-flex flex-md-row flex-wrap">
+    {% load template_extras %}
+    {% for dish in dish_list %}
+        
+        {% url 'food:delete_dish' dish.id as delete_url %}
+        {% url 'food:update_dish' dish.id as edit_url %}
+        {% url 'food:dish_detail' dish.id as more_url %}
+        {% dish_card dish=dish cur_url=request.path is_description=True is_deletable=True delete_url=delete_url is_editable=True edit_url=edit_url is_more=True more_url=more_url%}
+    {% endfor %}
+</div>
+<br>
+<a class="btn btn-primary" href="{% url 'food:dish_form' title %}">Добавить блюдо</a>
+<br>
+{% endblock %}

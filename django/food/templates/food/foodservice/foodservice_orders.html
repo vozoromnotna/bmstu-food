@@ -1,0 +1,33 @@
+{% extends "food/foodservice/foodservice_account.html" %}
+
+{% block foodservicecontent %}
+
+{% block links %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "food/foodservice_orders.css"%}"/>
+{% endblock links %}
+
+<h1 class = "first_title">Заказы заведения {{ title }}</h1>
+
+<table class = "table table-bordered border-primary border border-3">
+        
+    <tr class = "table-primary table-bordered border-primary ">
+    <th class="fw-medium">Дата</th>
+    <th class="fw-medium">Пользователь</th>
+    <th class="fw-medium">Номер заказа</th>
+    <th class="fw-medium">Подробнее</th>
+    </tr>
+    
+    {% for group in orders %}
+        {% if group %}
+        <tr class = "column">
+            <td> {{ group.0.order.date|date:"d-m-Y" }}</td>
+            <td>{{ group.0.order.user.username }}</td>
+            <td>{{ group.0.order.id }}</td>
+            <td><a href="{% url 'food:order_detail' group.0.order.id %}"  class="btn btn-primary btn-sm">Детали</a></td>       
+        </tr>
+        {% endif %}
+    {% endfor %}
+    
+</table>
+{% endblock foodservicecontent %}

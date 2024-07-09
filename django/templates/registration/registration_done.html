@@ -1,8 +1,8 @@
 {% extends "base/base.html" %}
 
-{% block title %}Welcome{% endblock %}
+{% block title %}Подтвердите почту{% endblock %}
 
 {% block content %}
-    <h1>Добро пожаловать, {{ new_user.first_name }}!</h1>
-    <p>Аккаунт успешно создан, теперь вы можете <a href="{% url "food:login" %}">войти</a>.</p>
+    <h1>Добро пожаловать</h1>
+    <p>Аккаунт успешно создан. На ваш email придет письмо для подтверждения адреса почты. Пожалуйста, подтвердите ее.</p>
 {% endblock %}

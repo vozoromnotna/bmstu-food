@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<h1>Добавить блюдо в избранное</h1>
+<div class="container text-left">
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="col-10">
+            {% load template_extras %}
+            {% stylize_form form "Добавить" %}
+        </div>
+        <div class="col">
+        </div>
+    </div>
+</div>
+{% endblock %}

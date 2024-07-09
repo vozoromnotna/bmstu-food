@@ -1,0 +1,12 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    <h1>Удаление блюда из меню</h1>
+    <p>Вы уверены, что хотите удалить блюдо из меню "{{ menu_list.dish }}"?</p>
+
+    <form action="{% url 'food:delete_menu' menu_list.id %}" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Удалить">
+        <a href="{% url 'food:menu' %}">Отмена</a>
+    </form>
+{% endblock %}

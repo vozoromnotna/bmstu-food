@@ -1,0 +1,33 @@
+{% extends 'base/base.html' %}
+
+{% block links %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "food/order_detail.css"%}"/>
+{% endblock %}
+
+{% block content %}
+
+    <h1 class = 'first_title'>Детали заказа номер {{ order.id }}</h1>
+    
+    <table class = "table table-bordered border-primary border border-3">
+
+        <tr class = "table-primary table-bordered border-primary ">
+            
+            <th class="fw-medium">Блюдо</th>
+            <th class="fw-medium">Цена за шт., Р.</th>
+            <th class="fw-medium">Количество</th>
+            <th class="fw-medium">Подробнее</th>
+                        
+        </tr>
+        {% for order_detail in order_details %}
+        <tr>
+            <td>{{ order_detail.dish.name }}</td>
+            <td>{{ order_detail.dish.price }}</td>
+            <td>{{ order_detail.count }}</td>            
+            <td><a href="{% url 'food:dish_detail' order_detail.dish.id %}" class="btn btn-primary btn-sm">Детали</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p class = 'total_amount'>Сумма заказа: {{ total_amount  }} Р.</p>
+{% endblock %}
+

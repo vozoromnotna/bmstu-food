@@ -8,12 +8,11 @@
     </div>
     <aside class="col-2">
         <div class="list-group m-2">
-                <a href={% url "food:orders" %} class="list-group-item list-group-item-action">Заказы</a>
-                <a href={% url "food:favorite_dish" %} class="list-group-item list-group-item-action">Избранные блюда</a>
+                <a href="{% url "food:user_orders_list" username=request.user.username %}" class="list-group-item list-group-item-action">Заказы</a>
+                <a href="{% url "food:favorite_dish" %}" class="list-group-item list-group-item-action">Избранные блюда</a>
         </div>
     </aside>
 </div>
 </div>
-
 
 {% endblock  %}

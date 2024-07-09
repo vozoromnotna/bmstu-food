@@ -21,11 +21,11 @@
                         Пользователь: {{user.get_username}}
                     </div>
                     <div class="p-2 ">
-                        <a href={% url "food:orders" %} class="btn btn-primary btn-lg">Личный кабинет</a>
+                        <a href="{% url "food:favorite_dish" %}" class="btn btn-primary btn-lg">Личный кабинет</a>
                     </div>
                     {% if user|has_group:"workers" %}
                     <div class="p-2">
-                        <a href={% url "food:worker_account" %} class="btn btn-primary btn-lg">Управление заведением</a>
+                        <a href="{% url "food:worker_account" %}" class="btn btn-primary btn-lg">Управление заведением</a>
                     </div>
                     {% endif %}
                     <div class="p-2">
@@ -37,10 +37,10 @@
                     
                 {% else %}
                     <div class="p-2 ">
-                        <a href={% url "food:login" %} class="btn btn-primary btn-lg">Войти</a>
+                        <a href="{% url "food:login" %}" class="btn btn-primary btn-lg">Войти</a>
                     </div>
                     <div class="p-2">
-                        <a href={% url "food:registration"  %} class="btn btn-primary btn-lg">Зарегистрироваться</a>
+                        <a href="{% url "food:registration"  %}" class="btn btn-primary btn-lg">Зарегистрироваться</a>
                     </div>
                     
                 {% endif %}
@@ -48,14 +48,16 @@
         </navbar>
     </header>
     <main>
-        {% block content  %}
+        {% block content %}
         {% endblock %}
     </main>
     <footer>
         <div>
-            <p>Обратная связь: aboba@abiba.su</p>
+            <p>Обратная связь: bmstufood@gmail.com</p>
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    {% block scripts %}
+    {% endblock %}
 </body>
 </html>

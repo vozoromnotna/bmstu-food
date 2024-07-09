@@ -1,0 +1,5 @@
+{% autoescape off %}
+Здравствуйте, {{ user.username }},
+Нажмите на ссылку, чтобы потвердить свой аккаунт
+https://{{ domain }}{% url 'food:activate' uidb64=uid token=token %}
+{% endautoescape %}
