@@ -19,7 +19,8 @@ urlpatterns = [
     
     
     path('favorite_dish', UserFavoriteDishView.as_view(), name='favorite_dish'),
-    path('favorite_dish/delete/<int:pk>/', UserFavoriteDishDeleteView.as_view(), name='favorite_dish_delete'),
+    path('favorite_dish/delete/<int:user_id>/<int:dish_id>/', UserFavoriteDishDeleteView.as_view(), name='favorite_dish_delete'),
+    path('favorite_dish/create/<int:user_id>/<int:dish_id>/', UserFavoriteDishCreateView.as_view(), name='favorite_dish_add'),
     
     
     path('orders', UserOrdersView.as_view(), name='orders'),
@@ -51,7 +52,7 @@ urlpatterns = [
     path('dish/<int:dish_id>/delete/', DishDeleteView.as_view(), name='delete_dish'),
     path('dish/<int:dish_id>/update/', DishUpdateView.as_view(), name='update_dish'),
     
-    path('foodservice/<str:title>/menu/add_favorite/', FavoriteCreateView.as_view(), name='favorite_form'),
+    
     path('foodservice/<str:title>/menu/', MenuListView.as_view(), name='menu'),
     path('foodservice/<str:title>/menu/create/', MenuCreateView.as_view(), name='menu_form'),
     path('menu/<int:pk>/delete/', MenuDeleteView.as_view(), name='delete_menu'),

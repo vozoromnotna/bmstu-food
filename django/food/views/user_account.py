@@ -1,11 +1,14 @@
+from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
-from django.views.generic import ListView, DeleteView, DetailView
+from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, Http404
+from django.views.generic import ListView, DeleteView, DetailView, CreateView
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Sum, F, DecimalField
 from ..models import Order, FavoriteDish, OrderDetails, Dish, Foodservice, FoodserviceWorker, FoodserviceRoles
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from itertools import groupby
 from operator import attrgetter
 
@@ -86,11 +89,40 @@ class UserFavoriteDishView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return FavoriteDish.objects.filter(user=self.request.user)
     
-class UserFavoriteDishDeleteView(LoginRequiredMixin, DeleteView):
+class UserFavoriteDishDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = FavoriteDish
-    success_url = reverse_lazy("food:favorite_dish")
-    def form_valid(self, form):
-        user = self.object.user
-        if user != self.request.user:
-            raise PermissionDenied
-        return super().form_valid(form)
+    def test_func(self):
+        if self.request.user.id != self.kwargs["user_id"]:
+            return False
+        return True
+    
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        object = get_object_or_404(FavoriteDish, user=self.kwargs["user_id"], dish=self.kwargs["dish_id"])
+        object.delete()
+        return HttpResponseRedirect(self.get_success_url())
+    
+    def get_success_url(self) -> str:
+        prev_url = self.request.POST.get('next', '/')
+        return prev_url
+    
+class UserFavoriteDishCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = FavoriteDish
+
+    def test_func(self):
+        if self.request.user.id != self.kwargs["user_id"]:
+            return False
+        return True
+    
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        user = get_object_or_404(User, id=self.kwargs["user_id"])
+        dish = get_object_or_404(Dish, id=self.kwargs["dish_id"])
+        object = FavoriteDish(user=user, dish=dish)
+        try:
+            object.save()
+            return HttpResponseRedirect(self.get_success_url())
+        except:
+            return Http404()
+        
+    def get_success_url(self) -> str:
+        prev_url = self.request.POST.get('next', '/')
+        return prev_url

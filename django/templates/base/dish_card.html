@@ -25,12 +25,16 @@
         {% endif %}
         {% if is_to_favorite %}
                 {% if favorite_status %}
-                    <form method="POST" action={{ to_favorite_url }}>
-                        {% csrf_token %}<input type="submit" class="list-group-item list-group-item-action border border-bottom-0 border-start-0 border-end-0" value="Убрать из избранного">
+                    <form method="POST" action={{ favorite_url }}>
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value={{ cur_url }}>
+                        <input type="submit" class="list-group-item list-group-item-action border border-bottom-0 border-start-0 border-end-0" value="Убрать из избранного">
                     </form>
                 {% else %}
-                    <form  method="POST" action={{ to_favorite_url }}>
-                        {% csrf_token %}<input class="list-group-item list-group-item-action border border-bottom-0 border-start-0 border-end-0" type="submit"  value="В избранное">
+                    <form  method="POST" action={{ favorite_url }}>
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value={{ cur_url }}>
+                        <input class="list-group-item list-group-item-action border border-bottom-0 border-start-0 border-end-0" type="submit"  value="В избранное">
                     </form>
             {% endif %}
 
@@ -40,7 +44,9 @@
         {% endif %}
         {% if is_deletable %}
                 <form method="POST" action={{ delete_url }}>
-                    {% csrf_token %}<input class="list-group-item list-group-item-action border border-bottom-0 border-start-0 border-end-0" onclick="return confirm('Вы уверены, что хотите удалить это блюдо?');" type="submit" class="btn btn-danger" value="Удалить">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value={{ cur_url }}>
+                    <input class="list-group-item list-group-item-action border border-bottom-0 border-start-0 border-end-0" onclick="return confirm('Вы уверены, что хотите удалить это блюдо?');" type="submit" class="btn btn-danger" value="Удалить">
                 </form>
         {% endif %}
         

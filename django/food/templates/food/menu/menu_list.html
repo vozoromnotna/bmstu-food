@@ -13,14 +13,21 @@
         {% for menu in menu_list %}
             {% url 'food:delete_menu' menu.id as delete_url %}
             {% url 'food:dish_detail' menu.dish.id as more_url %}
-            {% dish_card dish=menu.dish is_description=True is_deletable=True delete_url=delete_url is_to_favorite=True favorite_status=False is_more=True more_url=more_url %}
+            
+            {% if menu.dish|is_in_favorite:user %}
+                {% url 'food:favorite_dish_delete' user_id=user.id dish_id=menu.dish.id as favorite_url %}
+            {% else %}
+                {% url 'food:favorite_dish_add' user_id=user.id dish_id=menu.dish.id as favorite_url %}
+            {% endif %}
+            
+            {% dish_card dish=menu.dish cur_url=request.path is_description=True is_deletable=user|is_worker:title delete_url=delete_url is_to_favorite=True favorite_url=favorite_url favorite_status=menu.dish|is_in_favorite:user is_more=True more_url=more_url %}
+
+            
         {% endfor %}
     </div>
 
 <br><br>
 <a class="btn btn-primary" href="{% url 'food:menu_form' title %}">Добавить блюдо в меню</a>
-<br><br>
-<a class="btn btn-primary" href="{% url 'food:favorite_form' title %}">Добавить блюдо в избранное</a>
 <br><br>
 
 {% endblock %}

@@ -78,14 +78,4 @@ class MenuDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return reverse_lazy("food:menu", kwargs={"title": self.menu_details.menu.foodservice.title})
       
 
-class FavoriteCreateView(CreateView):
-    model = FavoriteDish
-    form_class = FavoriteForm
-    template_name = 'food/menu/favorite_form.html'
-    success_url = reverse_lazy('food:menu')
 
-    def form_invalid(self, form):
-        dish = form.cleaned_data['dish']
-        if FavoriteDish.objects.filter(dish=dish).exists():
-            form.add_error("dish", forms.ValidationError(f"{dish} уже есть в избранном"))
-            return super().form_invalid(form)
