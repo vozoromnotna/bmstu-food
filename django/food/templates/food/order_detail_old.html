@@ -1,0 +1,31 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+    
+    
+    {% if is_staff %}
+        <h1>Заказ номер {{ order.id }} от пользователя {{ order.user.username }}</h1>
+    {% else %}
+        <h1>Детали вашего заказа номер {{ order.id }}</h1>
+    {% endif %}
+    
+    <table>
+        <tr>
+            <th>Блюдо</th>
+            <th>Цена за шт., Р.</th>
+            <th>Количество</th>
+            <th>ID блюда</th>
+        </tr>
+        {% for order_detail in order_details %}
+        <tr>
+            <td>{{ order_detail.dish.name }}</td>
+            <td>{{ order_detail.dish.price }}</td>
+            <td>{{ order_detail.count }}</td>
+            <td>{{ order_detail.dish.id }}</td>
+            <td><a href="{% url 'food:dish_detail' order_detail.dish.id %}">Детали</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p>Сумма заказа: {{ total_amount  }} Р.</p>
+{% endblock %}
+

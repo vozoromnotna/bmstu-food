@@ -1,12 +1,12 @@
-{% extends 'base/base.html' %}
+{% extends "food/foodservice/foodservice_account.html" %}
 
 {% block links %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static "food/menu.css"%}" />
 {% endblock %}
 
-{% block content %}
-<h1>Список всех блюд</h1>
+{% block foodservicecontent %}
+<h1>Список блюд заведения {{ title }}</h1>
 <a class="btn btn-primary" href="{% url 'food:dish_form' %}">Добавить блюдо</a>
 <div class="d-flex flex-md-row flex-wrap">
     {% for dish in dish_list %}
@@ -33,4 +33,8 @@
     </div>
     {% endfor %}
 </div>
+<br><br>
+<a href="{% url 'food:dish_form' title %}">Добавить блюдо</a>
+<br>
+<!--    <a href="{% url 'food:foodservice_form' %}">Добавить заведение</a>-->
 {% endblock %}

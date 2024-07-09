@@ -9,13 +9,27 @@ from django.contrib.auth.models import Group
 from ..models import *
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from ..forms import forms, FoodserviceWorkerForm, FoodserviceForm
+from itertools import groupby
+from operator import attrgetter
 from django.shortcuts import get_object_or_404
+from itertools import groupby
+from operator import attrgetter
 
-class FoodserviceCreateView(CreateView):
+
+class FoodserviceCreateView(UserPassesTestMixin, CreateView):
     model = Foodservice
     form_class = FoodserviceForm
     template_name = 'food/foodservice/foodservice_form.html'
-    success_url = reverse_lazy('food:dish')
+    
+    def test_func(self):
+        if self.request.user.is_superuser:
+            return True
+        
+        return False
+    
+    def get_success_url(self) -> str:
+        return reverse_lazy('food:foodservice_detail', kwargs={"title": self.object.title})
+    
 
 class WorkerFoodservicesView(LoginRequiredMixin, ListView):
     model = Foodservice
@@ -45,16 +59,19 @@ class FoodserviceWorkersView(LoginRequiredMixin, ListView):
         return context
     
     
-class FoodserviceWorkerDeleteView(LoginRequiredMixin, DeleteView):
+class FoodserviceWorkerDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     template_name = "food/foodservice/foodservice_workers_delete.html"
     context_object_name = "foodservice_worker"
     model = FoodserviceWorker
+    def test_func(self):
+        return self.request.user == self.object.foodservice.owner
+    
     def form_valid(self, form):
-        
-        if self.request.user != self.object.foodservice.owner:
-            raise PermissionDenied
-
         worker = self.object.worker
+        
+        if worker == self.object.foodservice.owner:
+            form.add_error(None, forms.ValidationError("Невозможно удалить владельца"))
+            return super().form_invalid(form)
         
         self.object.delete()
         
@@ -75,11 +92,15 @@ class FoodserviceWorkerDeleteView(LoginRequiredMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy("food:foodservice_workers", kwargs = {"title": self.kwargs["title"]})
 
-class FoodserviceWorkerAddView(LoginRequiredMixin, CreateView):
+class FoodserviceWorkerAddView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = FoodserviceWorker
     form_class = FoodserviceWorkerForm
     template_name = "food/foodservice/foodservice_worker_add.html" 
 
+    def test_func(self):
+        foodservice = Foodservice.objects.get(title=self.kwargs['title'])
+        return foodservice.owner == self.request.user 
+    
     def form_valid(self, form):
         foodservice = Foodservice.objects.get(title=self.kwargs['title'])
         form.instance.foodservice = foodservice
@@ -116,7 +137,15 @@ class FoodserviceOrdersListView(LoginRequiredMixin, UserPassesTestMixin, ListVie
     def get_queryset(self):
         foodservice = Foodservice.objects.get(title=self.kwargs["title"])
         ordering = '-order__date'
-        return OrderDetails.objects.filter(dish__foodservice=foodservice).select_related('order', 'dish').order_by(ordering)
+        queryset = OrderDetails.objects.filter(dish__foodservice=foodservice).select_related('order', 'dish').order_by(ordering)
+        
+        # Группировка заказов по номеру и сортировка по дате
+        grouped_orders = []
+        queryset = sorted(queryset, key=lambda x: (x.order.id, x.order.date), reverse=True)
+        for key, group in groupby(queryset, key=attrgetter('order.id')):
+            grouped_orders.append(list(group))
+            
+        return grouped_orders
 
 class FoodserviceDetailView(DetailView):
     template_name = "food/foodservice/foodservice_detail.html"
@@ -136,10 +165,14 @@ class FoodserviceDetailView(DetailView):
         context["title"] = self.kwargs["title"]
         return context
 
-class FoodserviceUpdateView(UpdateView):
+class FoodserviceUpdateView(UserPassesTestMixin, UpdateView):
     template_name = "food/foodservice/foodservice_update.html"
     model = Foodservice
     form_class = FoodserviceForm
+    def test_func(self):
+        foodservice = Foodservice.objects.get(title=self.kwargs['title'])
+        return foodservice.owner == self.request.user 
+    
     def get_object(self):
         return get_object_or_404(Foodservice, title=self.kwargs["title"])
     
