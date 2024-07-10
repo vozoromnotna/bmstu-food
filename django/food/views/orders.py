@@ -28,14 +28,22 @@ class CreateOrderView(ListView, LoginRequiredMixin):
             return HttpResponse(content="UserNotExist")
         
         orderObject = Order(user=user)
-        orderObject.save()
+        
+        orderDetails = []
         
         for position in order:
             dish = Dish.objects.filter(name=position["dish"]).first()
+            
             if (not dish):
                 return HttpResponse(content="DishNotFound") 
-            OrderDetails(order=orderObject, dish=dish, count=position["count"]).save()
+            if int(position["count"]) < 1:
+                return HttpResponse(content="DishCountError")
             
+            orderDetails.append(OrderDetails(order=orderObject, dish=dish, count=position["count"]))
+        
+        
+        orderObject.save()
+        for od in orderDetails: od.save()
         
         return HttpResponseRedirect(reverse_lazy("food:order_create_success"))
     

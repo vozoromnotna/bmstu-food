@@ -64,7 +64,7 @@ class FoodserviceWorkerDeleteView(LoginRequiredMixin, UserPassesTestMixin, Delet
     context_object_name = "foodservice_worker"
     model = FoodserviceWorker
     def test_func(self):
-        return self.request.user == self.object.foodservice.owner
+        return self.request.user == self.get_object().foodservice.owner
     
     def form_valid(self, form):
         worker = self.object.worker

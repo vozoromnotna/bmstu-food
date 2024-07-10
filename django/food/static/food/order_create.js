@@ -132,6 +132,10 @@ async function postOrder(){
         addError(usernameInput, "Такого пользователя не существует");
     }
 
+    if (text == "DishCountError"){
+        addError(createOrderBtn, "Не верно указано количество блюд");
+    }
+
     console.log(text);
 }
 function clearError(element){
